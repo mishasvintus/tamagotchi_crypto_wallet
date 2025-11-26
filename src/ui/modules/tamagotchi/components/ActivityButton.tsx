@@ -1,5 +1,5 @@
 import { ActivityItem } from '@/tamagotchi/types';
-import './ActivityButton.css';
+import { ActionButton } from './ActionButton';
 
 interface ActivityButtonProps {
   activity: ActivityItem;
@@ -8,9 +8,11 @@ interface ActivityButtonProps {
 
 export function ActivityButton({ activity, onClick }: ActivityButtonProps) {
   return (
-    <button className="activity-button" onClick={onClick}>
-      <span className="activity-button__emoji">{activity.emoji}</span>
-    </button>
+    <ActionButton 
+      emoji={activity.emoji} 
+      onClick={onClick}
+      activeColor="#4caf50"
+    />
   );
 }
 

@@ -6,3 +6,8 @@
   --stat-button-vertical-position: 10%;
 }
 
+.stat-page__actions {
+  --row-vertical-position: 12%;
+  --row-gap: 2%;
+}
+

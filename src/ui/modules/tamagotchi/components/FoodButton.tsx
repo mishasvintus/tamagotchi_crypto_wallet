@@ -1,5 +1,5 @@
 import { FoodItem } from '@/tamagotchi/types';
-import './FoodButton.css';
+import { ActionButton } from './ActionButton';
 
 interface FoodButtonProps {
   food: FoodItem;
@@ -8,9 +8,11 @@ interface FoodButtonProps {
 
 export function FoodButton({ food, onClick }: FoodButtonProps) {
   return (
-    <button className="food-button" onClick={onClick}>
-      <span className="food-button__emoji">{food.emoji}</span>
-    </button>
+    <ActionButton 
+      emoji={food.emoji} 
+      onClick={onClick}
+      activeColor="#ff9800"
+    />
   );
 }
 

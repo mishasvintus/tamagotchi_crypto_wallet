@@ -143,7 +143,7 @@ export class TamagotchiService {
     
     // Рассчитываем награду пропорционально: N * (actual / max)
     const reward = actualRestore > 0 
-      ? Math.floor(food.currencyReward * (actualRestore / maxRestore))
+      ? Math.ceil(food.currencyReward * (actualRestore / maxRestore))
       : 0;
     
     this.state.currency += reward;
@@ -175,7 +175,7 @@ export class TamagotchiService {
     
     // Рассчитываем награду пропорционально: N * (actual / max)
     const reward = actualRestore > 0
-      ? Math.floor(activity.currencyReward * (actualRestore / maxRestore))
+      ? Math.ceil(activity.currencyReward * (actualRestore / maxRestore))
       : 0;
     
     this.state.currency += reward;

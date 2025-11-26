@@ -6,14 +6,6 @@
 }
 
 .home-page__stats {
-  position: absolute;
-  bottom: var(--stat-button-vertical-position, 8%);
-  left: 0;
-  right: 0;
-  --stat-button-vertical-position: 10%;
-  --stat-button-gap: 50%;
-}
-
-.home-page__stats .stats-row .stat-button {
-  bottom: 0;
+  --row-vertical-position: 10%;
+  --row-gap: 50%;
 }

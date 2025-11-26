@@ -1,0 +1,21 @@
+.action-row {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: var(--row-vertical-position, 0);
+  --row-vertical-position: 26%;
+  --row-gap: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--row-gap, 2%);
+}
+
+.action-row .action-button {
+  position: relative;
+  left: auto;
+  transform: none;
+  bottom: auto;
+}
+

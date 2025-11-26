@@ -1,0 +1,36 @@
+.action-button {
+  position: absolute;
+  width: 10%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 0.125rem solid #ddd;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  --action-button-scale: 1.15;
+  --action-button-active-color: #4caf50;
+}
+
+.action-button:hover {
+  background: #e0e0e0;
+  transform: scale(var(--action-button-scale, 1.15));
+}
+
+.action-button:active {
+  transform: scale(0.9);
+  background: var(--action-button-active-color, #4caf50);
+}
+
+.action-button__emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

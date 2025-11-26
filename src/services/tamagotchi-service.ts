@@ -58,6 +58,8 @@ export class TamagotchiService {
   private state: TamagotchiState;
   private decreaseInterval: number | null = null;
   private lastDecreaseTime: number = Date.now();
+  private lastFullHappinessTime: number | null = null; // Время последнего полного заполнения счастья
+  private lastFullFullnessTime: number | null = null; // Время последнего полного заполнения сытости
 
   constructor() {
     // Инициализация с начальными данными
@@ -84,11 +86,37 @@ export class TamagotchiService {
     const now = Date.now();
     const timePassed = now - this.lastDecreaseTime;
     const minutesPassed = timePassed / 60000; // миллисекунды в минуты
+    const tenMinutesInMs = 10 * 60 * 1000; // 10 минут в миллисекундах
     
     if (minutesPassed >= 1) {
       const decreaseAmount = Math.floor(minutesPassed);
-      this.state.currentPet.fullness = Math.max(0, this.state.currentPet.fullness - decreaseAmount);
-      this.state.currentPet.happiness = Math.max(0, this.state.currentPet.happiness - decreaseAmount);
+      
+      // Проверяем, можно ли уменьшать счастье
+      let canDecreaseHappiness = true;
+      if (this.lastFullHappinessTime !== null) {
+        const timeSinceFull = now - this.lastFullHappinessTime;
+        if (timeSinceFull < tenMinutesInMs) {
+          canDecreaseHappiness = false;
+        }
+      }
+      
+      // Проверяем, можно ли уменьшать сытость
+      let canDecreaseFullness = true;
+      if (this.lastFullFullnessTime !== null) {
+        const timeSinceFull = now - this.lastFullFullnessTime;
+        if (timeSinceFull < tenMinutesInMs) {
+          canDecreaseFullness = false;
+        }
+      }
+      
+      if (canDecreaseHappiness) {
+        this.state.currentPet.happiness = Math.max(0, this.state.currentPet.happiness - decreaseAmount);
+      }
+      
+      if (canDecreaseFullness) {
+        this.state.currentPet.fullness = Math.max(0, this.state.currentPet.fullness - decreaseAmount);
+      }
+      
       this.lastDecreaseTime = now - (timePassed % 60000); // Сохраняем остаток
       this.saveToStorage();
     }
@@ -98,8 +126,35 @@ export class TamagotchiService {
   private startDecreaseTimer(): void {
     // Уменьшаем каждую минуту (60000 мс)
     this.decreaseInterval = window.setInterval(() => {
-      this.state.currentPet.fullness = Math.max(0, this.state.currentPet.fullness - 1);
-      this.state.currentPet.happiness = Math.max(0, this.state.currentPet.happiness - 1);
+      const now = Date.now();
+      const tenMinutesInMs = 10 * 60 * 1000; // 10 минут в миллисекундах
+      
+      // Проверяем, можно ли уменьшать счастье
+      let canDecreaseHappiness = true;
+      if (this.lastFullHappinessTime !== null) {
+        const timeSinceFull = now - this.lastFullHappinessTime;
+        if (timeSinceFull < tenMinutesInMs) {
+          canDecreaseHappiness = false;
+        }
+      }
+      
+      // Проверяем, можно ли уменьшать сытость
+      let canDecreaseFullness = true;
+      if (this.lastFullFullnessTime !== null) {
+        const timeSinceFull = now - this.lastFullFullnessTime;
+        if (timeSinceFull < tenMinutesInMs) {
+          canDecreaseFullness = false;
+        }
+      }
+      
+      if (canDecreaseHappiness) {
+        this.state.currentPet.happiness = Math.max(0, this.state.currentPet.happiness - 1);
+      }
+      
+      if (canDecreaseFullness) {
+        this.state.currentPet.fullness = Math.max(0, this.state.currentPet.fullness - 1);
+      }
+      
       this.lastDecreaseTime = Date.now();
       this.saveToStorage();
     }, 60000);
@@ -148,6 +203,11 @@ export class TamagotchiService {
     // Обновляем состояние
     this.state.currentPet.fullness = fullnessAfter;
     
+    // Если шкала полностью заполнена, сохраняем время
+    if (fullnessAfter >= 100) {
+      this.lastFullFullnessTime = Date.now();
+    }
+    
     // Рассчитываем награду пропорционально: N * (actual / max)
     const reward = actualRestore > 0 
       ? Math.ceil(food.currencyReward * (actualRestore / maxRestore))
@@ -179,6 +239,11 @@ export class TamagotchiService {
 
     // Обновляем состояние
     this.state.currentPet.happiness = happinessAfter;
+    
+    // Если шкала полностью заполнена, сохраняем время
+    if (happinessAfter >= 100) {
+      this.lastFullHappinessTime = Date.now();
+    }
     
     // Рассчитываем награду пропорционально: N * (actual / max)
     const reward = actualRestore > 0
@@ -256,6 +321,12 @@ export class TamagotchiService {
     try {
       localStorage.setItem('tamagotchi-state', JSON.stringify(this.state));
       localStorage.setItem('tamagotchi-last-decrease', this.lastDecreaseTime.toString());
+      if (this.lastFullHappinessTime !== null) {
+        localStorage.setItem('tamagotchi-last-full-happiness', this.lastFullHappinessTime.toString());
+      }
+      if (this.lastFullFullnessTime !== null) {
+        localStorage.setItem('tamagotchi-last-full-fullness', this.lastFullFullnessTime.toString());
+      }
     } catch (error) {
       console.error('Failed to save tamagotchi state:', error);
     }
@@ -299,6 +370,16 @@ export class TamagotchiService {
       const lastDecrease = localStorage.getItem('tamagotchi-last-decrease');
       if (lastDecrease) {
         this.lastDecreaseTime = parseInt(lastDecrease, 10);
+      }
+      
+      const lastFullHappiness = localStorage.getItem('tamagotchi-last-full-happiness');
+      if (lastFullHappiness) {
+        this.lastFullHappinessTime = parseInt(lastFullHappiness, 10);
+      }
+      
+      const lastFullFullness = localStorage.getItem('tamagotchi-last-full-fullness');
+      if (lastFullFullness) {
+        this.lastFullFullnessTime = parseInt(lastFullFullness, 10);
       }
     } catch (error) {
       console.error('Failed to load tamagotchi state:', error);

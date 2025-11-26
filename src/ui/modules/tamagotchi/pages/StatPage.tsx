@@ -3,21 +3,36 @@ import { tamagotchiService } from '@/services/tamagotchi-service';
 import { StatButton } from '../components/StatButton';
 import { CurrencyButton } from '../components/CurrencyButton';
 import { BackButton } from '../components/BackButton';
-import './FoodPage.css';
+import './StatPage.css';
 
-interface FoodPageProps {
+export type StatPageType = 'entertainment' | 'food';
+
+interface StatPageProps {
+  type: StatPageType;
   onNavigate: (page: TamagotchiPage) => void;
 }
 
-export function FoodPage({ onNavigate }: FoodPageProps) {
+const statPageConfig = {
+  entertainment: {
+    emoji: '😊',
+    getValue: (pet: ReturnType<typeof tamagotchiService.getPet>) => pet.happiness,
+  },
+  food: {
+    emoji: '🍴',
+    getValue: (pet: ReturnType<typeof tamagotchiService.getPet>) => pet.fullness,
+  },
+};
+
+export function StatPage({ type, onNavigate }: StatPageProps) {
   const pet = tamagotchiService.getPet();
   const currency = tamagotchiService.getCurrency();
+  const config = statPageConfig[type];
 
   return (
-    <div className="food-page">
+    <div className={`stat-page stat-page--${type}`}>
       <StatButton
-        emoji="🍴"
-        value={pet.fullness}
+        emoji={config.emoji}
+        value={config.getValue(pet)}
         onClick={() => {}}
         absolute={true}
       />

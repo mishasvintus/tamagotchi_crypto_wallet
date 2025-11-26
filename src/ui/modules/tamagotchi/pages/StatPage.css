@@ -1,7 +1,8 @@
-.entertainment-page {
+.stat-page {
   position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
-  --stat-button-vertical-position: 8%;
+  --stat-button-vertical-position: 10%;
 }
+

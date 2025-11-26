@@ -11,6 +11,7 @@
   transition: transform 0.2s;
   width: 20%;
   aspect-ratio: 1;
+  --stat-button-scale: 1.07;
 }
 
 .stat-button--absolute {
@@ -22,19 +23,19 @@
 
 
 .stat-button:hover {
-  transform: scale(1.1);
+  transform: scale(var(--stat-button-scale, 1.1));
 }
 
 .stat-button--absolute:hover {
-  transform: translateX(-50%) scale(1.1);
+  transform: translateX(-50%) scale(var(--stat-button-scale, 1.1));
 }
 
-.stats-row .stat-button:hover {
-  transform: translateX(calc(-100% - var(--stat-button-gap, 12%) / 2)) scale(1.1);
+.stats-row .stat-button:nth-child(1):hover {
+  transform: translateX(calc(-100% - var(--stat-button-gap, 12%) / 2)) scale(var(--stat-button-scale, 1.1));
 }
 
 .stats-row .stat-button:nth-child(2):hover {
-  transform: translateX(calc(var(--stat-button-gap, 12%) / 2)) scale(1.1);
+  transform: translateX(calc(var(--stat-button-gap, 12%) / 2)) scale(var(--stat-button-scale, 1.1));
 }
 
 .stat-button:active {
@@ -45,7 +46,7 @@
   transform: translateX(-50%) scale(0.95);
 }
 
-.stats-row .stat-button:active {
+.stats-row .stat-button:nth-child(1):active {
   transform: translateX(calc(-100% - var(--stat-button-gap, 12%) / 2)) scale(0.95);
 }
 

@@ -10,7 +10,7 @@
   bottom: var(--stat-button-vertical-position, 8%);
   left: 0;
   right: 0;
-  --stat-button-vertical-position: 8%;
+  --stat-button-vertical-position: 10%;
   --stat-button-gap: 50%;
 }
 

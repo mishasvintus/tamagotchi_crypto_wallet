@@ -16,7 +16,7 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
       <CurrencyButton 
         amount={currency} 
         onClick={() => {}}
-        position="right-top"
+        position="center-top"
       />
       <BackButton onClick={() => onNavigate('home')} />
     </div>

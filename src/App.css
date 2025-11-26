@@ -1,0 +1,23 @@
+.app {
+  width: 450px;
+  height: 750px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app__wallet-placeholder {
+  height: 20%;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  color: #666;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

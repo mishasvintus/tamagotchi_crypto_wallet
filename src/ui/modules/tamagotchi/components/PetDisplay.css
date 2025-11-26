@@ -1,0 +1,52 @@
+.pet-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5%;
+}
+
+.pet-display__sprite {
+  position: relative;
+  width: 30%;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1px;
+}
+
+.pet-display__part {
+  position: absolute;
+  font-size: 30em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pet-display__part--hat {
+  top: 0;
+  z-index: 3;
+}
+
+.pet-display__part--body {
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.pet-display__part--shoes {
+  bottom: 0;
+  z-index: 1;
+}
+
+.pet-display__info {
+  text-align: center;
+}
+
+.pet-display__name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+

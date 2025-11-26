@@ -1,0 +1,63 @@
+.currency-button {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5%;
+  width: 20%;
+  height: 8%;
+  padding: 1.5% 3%;
+  background: #ffd700;
+  border: 0.125rem solid #ffb300;
+  border-radius: 1.5625rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  top: 3%;
+}
+
+.currency-button--center-top {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.currency-button--center-top:hover {
+  transform: translateX(-50%) scale(1.05);
+}
+
+.currency-button--right-top {
+  right: 2%;
+}
+
+.currency-button:hover {
+  background: #ffb300;
+}
+
+.currency-button--right-top:hover {
+  transform: scale(1.05);
+}
+
+.currency-button--center-top:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.currency-button--right-top:active {
+  transform: scale(0.95);
+}
+
+.currency-button__emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.currency-button__amount {
+  color: #333;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+}
+

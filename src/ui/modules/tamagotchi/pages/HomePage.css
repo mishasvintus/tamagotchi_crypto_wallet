@@ -1,0 +1,19 @@
+.home-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.home-page__stats {
+  position: absolute;
+  bottom: var(--stat-button-vertical-position, 8%);
+  left: 0;
+  right: 0;
+  --stat-button-vertical-position: 8%;
+  --stat-button-gap: 50%;
+}
+
+.home-page__stats .stats-row .stat-button {
+  bottom: 0;
+}

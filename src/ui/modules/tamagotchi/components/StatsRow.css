@@ -1,0 +1,14 @@
+.stats-row {
+  position: relative;
+  width: 100%;
+}
+
+.stats-row .stat-button:nth-child(1) {
+  left: 50%;
+  transform: translateX(calc(-100% - var(--stat-button-gap, 12%) / 2));
+}
+
+.stats-row .stat-button:nth-child(2) {
+  left: 50%;
+  transform: translateX(calc(var(--stat-button-gap, 12%) / 2));
+}

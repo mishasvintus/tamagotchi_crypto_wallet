@@ -1,0 +1,92 @@
+.stat-button {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  width: 20%;
+  aspect-ratio: 1;
+}
+
+.stat-button--absolute {
+  position: absolute;
+  bottom: var(--stat-button-vertical-position, 8%);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+.stat-button:hover {
+  transform: scale(1.1);
+}
+
+.stat-button--absolute:hover {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.stats-row .stat-button:hover {
+  transform: translateX(calc(-100% - var(--stat-button-gap, 12%) / 2)) scale(1.1);
+}
+
+.stats-row .stat-button:nth-child(2):hover {
+  transform: translateX(calc(var(--stat-button-gap, 12%) / 2)) scale(1.1);
+}
+
+.stat-button:active {
+  transform: scale(0.95);
+}
+
+.stat-button--absolute:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.stats-row .stat-button:active {
+  transform: translateX(calc(-100% - var(--stat-button-gap, 12%) / 2)) scale(0.95);
+}
+
+.stats-row .stat-button:nth-child(2):active {
+  transform: translateX(calc(var(--stat-button-gap, 12%) / 2)) scale(0.95);
+}
+
+.stat-button__circle-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.stat-button__circle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.stat-button__progress {
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.stat-button__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-button__emoji {
+  font-size: 1.5rem;
+}
+
+.stat-button__label {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: bold;
+  text-align: center;
+}
+

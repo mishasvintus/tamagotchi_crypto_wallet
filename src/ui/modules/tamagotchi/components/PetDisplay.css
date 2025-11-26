@@ -1,14 +1,19 @@
 .pet-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: var(--pet-display-top, 25%);
+  width: var(--pet-display-size, 30%);
+  aspect-ratio: 1;
+  /* Глобальные настройки размера и расположения питомца */
+  --pet-display-top: 30%;
+  --pet-display-size: 40%;
 }
 
 .pet-display__sprite {
   position: relative;
-  width: 30%;
-  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,35 +23,42 @@
 
 .pet-display__part {
   position: absolute;
-  font-size: 30em;
-  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.pet-display__part--hat {
-  top: 0;
-  z-index: 3;
+  pointer-events: none;
 }
 
 .pet-display__part--body {
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   z-index: 2;
+  width: 100%;
+  height: 100%;
+  font-size: 30em;
 }
 
-.pet-display__part--shoes {
-  bottom: 0;
+.pet-display__part--hat {
+  z-index: 3;
+  font-size: 20em;
+}
+
+.pet-display__part--shoe {
   z-index: 1;
+  font-size: 20em;
 }
 
-.pet-display__info {
-  text-align: center;
+.pet-display__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-.pet-display__name {
-  font-size: 1.5rem;
-  font-weight: bold;
+.pet-display__emoji {
+  display: block;
+  line-height: 1;
 }
+
 

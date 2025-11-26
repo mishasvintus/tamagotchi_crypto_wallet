@@ -5,6 +5,7 @@ import { StatButton } from '../components/StatButton';
 import { CurrencyButton } from '../components/CurrencyButton';
 import { BackButton } from '../components/BackButton';
 import { ActionRow, type ActionItem } from '../components/ActionRow';
+import { PetDisplay } from '../components/PetDisplay';
 import './StatPage.css';
 
 export type StatPageType = 'entertainment' | 'food';
@@ -69,6 +70,7 @@ export function StatPage({ type, onNavigate }: StatPageProps) {
         onClick={() => {}}
         position="center-top"
       />
+      <PetDisplay pet={pet} />
       {actionItems.length > 0 && (
         <div className="stat-page__actions">
           <ActionRow actions={actionItems} />

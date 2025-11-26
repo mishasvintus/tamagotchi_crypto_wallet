@@ -1,4 +1,4 @@
-import { Pet, ShopItem } from '@/tamagotchi/types';
+import { Pet, ShopItem, PetAccessoryConfig } from '@/tamagotchi/types';
 import { tamagotchiService } from '@/services/tamagotchi-service';
 import './PetDisplay.css';
 
@@ -22,28 +22,65 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
         ? tamagotchiService.getState().shopItems.find(i => i.id === pet.equippedShoes)
         : null);
 
+  const config: PetAccessoryConfig = pet.accessoryConfig || {};
+
+  // Функция для рендеринга изображения или эмодзи
+  const renderImageOrEmoji = (imageUrl: string | undefined, emoji: string) => {
+    if (imageUrl) {
+      return <img src={imageUrl} alt="" className="pet-display__image" />;
+    }
+    return <span className="pet-display__emoji">{emoji}</span>;
+  };
+
   return (
     <div className="pet-display">
       <div className="pet-display__sprite">
-        {/* Шляпа (сверху) */}
-        {hat && (
-          <div className="pet-display__part pet-display__part--hat">
-            {hat.emoji}
-          </div>
-        )}
-        {/* Тело (посередине) */}
+        {/* Тело (основа) */}
         <div className="pet-display__part pet-display__part--body">
-          {pet.emoji}
+          {renderImageOrEmoji(pet.imageUrl, pet.emoji)}
         </div>
-        {/* Ботинки (снизу) */}
-        {shoes && (
-          <div className="pet-display__part pet-display__part--shoes">
-            {shoes.emoji}
+        
+        {/* Шляпа */}
+        {hat && config.hat && (
+          <div 
+            className="pet-display__part pet-display__part--hat"
+            style={{
+              left: `${config.hat.x}%`,
+              top: `${config.hat.y}%`,
+              transform: `translate(-50%, -50%) scale(${config.hat.scale})${config.hat.rotation ? ` rotate(${config.hat.rotation}deg)` : ''}`,
+            }}
+          >
+            {renderImageOrEmoji(hat.imageUrl, hat.emoji)}
           </div>
         )}
-      </div>
-      <div className="pet-display__info">
-        <div className="pet-display__name">{pet.name}</div>
+        
+        {/* Левый ботинок */}
+        {shoes && config.leftShoe && (
+          <div 
+            className="pet-display__part pet-display__part--shoe pet-display__part--left-shoe"
+            style={{
+              left: `${config.leftShoe.x}%`,
+              top: `${config.leftShoe.y}%`,
+              transform: `translate(-50%, -50%) scale(${config.leftShoe.scale})${config.leftShoe.rotation ? ` rotate(${config.leftShoe.rotation}deg)` : ''}`,
+            }}
+          >
+            {renderImageOrEmoji(shoes.imageUrl, shoes.emoji)}
+          </div>
+        )}
+        
+        {/* Правый ботинок */}
+        {shoes && config.rightShoe && (
+          <div 
+            className="pet-display__part pet-display__part--shoe pet-display__part--right-shoe"
+            style={{
+              left: `${config.rightShoe.x}%`,
+              top: `${config.rightShoe.y}%`,
+              transform: `translate(-50%, -50%) scale(${config.rightShoe.scale})${config.rightShoe.rotation ? ` rotate(${config.rightShoe.rotation}deg)` : ''}`,
+            }}
+          >
+            {renderImageOrEmoji(shoes.imageUrl, shoes.emoji)}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,18 +7,25 @@ import type {
   TamagotchiState 
 } from '@/tamagotchi/types';
 
-// Mock данные для разработки UI
-const MOCK_PETS: Pet[] = [
+// Начальные данные игры
+const INITIAL_PETS: Pet[] = [
   {
     id: 'cat-1',
-    name: 'Котик',
-    emoji: '🐱',
+    name: 'Sad Boy',
+    emoji: '🐱', // Fallback
+    imageUrl: '/assets/pets/sad_boy.png',
     happiness: 80,
     fullness: 70,
+    accessoryConfig: {
+      // Конфигурация будет добавлена позже, когда появятся аксессуары
+      hat: { x: 50, y: 10, scale: 0.8 },
+      leftShoe: { x: 35, y: 85, scale: 0.6 },
+      rightShoe: { x: 65, y: 85, scale: 0.6 },
+    },
   },
 ];
 
-const MOCK_SHOP_ITEMS: ShopItem[] = [
+const INITIAL_SHOP_ITEMS: ShopItem[] = [
   // Питомцы
   { id: 'pet-cat', name: 'Котик', emoji: '🐱', category: 'pets', price: 100, owned: true },
   { id: 'pet-dog', name: 'Собачка', emoji: '🐶', category: 'pets', price: 150, owned: false },
@@ -33,14 +40,14 @@ const MOCK_SHOP_ITEMS: ShopItem[] = [
   { id: 'shoes-boots', name: 'Сапоги', emoji: '👢', category: 'shoes', price: 80, owned: false },
 ];
 
-const MOCK_FOOD: FoodItem[] = [
+const INITIAL_FOOD: FoodItem[] = [
   { id: 'food-apple', name: 'Яблоко', emoji: '🍎', currencyReward: 2, restoreAmount: 20 },
   { id: 'food-pizza', name: 'Пицца', emoji: '🍕', currencyReward: 5, restoreAmount: 20 },
   { id: 'food-cake', name: 'Торт', emoji: '🍰', currencyReward: 8, restoreAmount: 20 },
   { id: 'food-meat', name: 'Мясо', emoji: '🥩', currencyReward: 10, restoreAmount: 20 },
 ];
 
-const MOCK_ACTIVITIES: ActivityItem[] = [
+const INITIAL_ACTIVITIES: ActivityItem[] = [
   { id: 'activity-game', name: 'Игра', emoji: '🎮', currencyReward: 3, restoreAmount: 15 },
   { id: 'activity-dart', name: 'Дартс', emoji: '🎯', currencyReward: 5, restoreAmount: 15 },
   { id: 'activity-dice', name: 'Кости', emoji: '🎲', currencyReward: 4, restoreAmount: 15 },
@@ -53,13 +60,13 @@ export class TamagotchiService {
   private lastDecreaseTime: number = Date.now();
 
   constructor() {
-    // Инициализация с mock данными
+    // Инициализация с начальными данными
     this.state = {
-      currentPet: MOCK_PETS[0],
+      currentPet: INITIAL_PETS[0],
       currency: 150,
       ownedPets: ['pet-cat'],
       ownedItems: [],
-      shopItems: MOCK_SHOP_ITEMS,
+      shopItems: INITIAL_SHOP_ITEMS,
     };
     
     // Загрузка из localStorage (если есть)
@@ -125,7 +132,7 @@ export class TamagotchiService {
 
   // Покормить питомца
   feedPet(foodId: string): Promise<{ success: boolean; currency: number }> {
-    const food = MOCK_FOOD.find(f => f.id === foodId);
+    const food = INITIAL_FOOD.find(f => f.id === foodId);
     if (!food) {
       return Promise.resolve({ success: false, currency: 0 });
     }
@@ -157,7 +164,7 @@ export class TamagotchiService {
 
   // Поиграть с питомцем
   playWithPet(activityId: string): Promise<{ success: boolean; currency: number }> {
-    const activity = MOCK_ACTIVITIES.find(a => a.id === activityId);
+    const activity = INITIAL_ACTIVITIES.find(a => a.id === activityId);
     if (!activity) {
       return Promise.resolve({ success: false, currency: 0 });
     }
@@ -219,7 +226,7 @@ export class TamagotchiService {
       this.state.currentPet.equippedShoes = itemId;
     } else if (item.category === 'pets') {
       // Переключение питомца
-      const pet = MOCK_PETS.find(p => p.id === itemId);
+      const pet = INITIAL_PETS.find(p => p.id === itemId);
       if (pet) {
         this.state.currentPet = { ...pet };
       }
@@ -235,12 +242,12 @@ export class TamagotchiService {
 
   // Получить еду
   getFoodItems(): FoodItem[] {
-    return MOCK_FOOD;
+    return INITIAL_FOOD;
   }
 
   // Получить развлечения
   getActivityItems(): ActivityItem[] {
-    return MOCK_ACTIVITIES;
+    return INITIAL_ACTIVITIES;
   }
 
 
@@ -260,7 +267,33 @@ export class TamagotchiService {
       const saved = localStorage.getItem('tamagotchi-state');
       if (saved) {
         const parsed = JSON.parse(saved);
-        this.state = { ...this.state, ...parsed };
+        // Мержим данные, сохраняя новые поля из начальных данных (например, imageUrl)
+        if (parsed.currentPet) {
+          const initialPet = INITIAL_PETS.find(p => p.id === parsed.currentPet.id);
+          if (initialPet) {
+            // Объединяем сохраненные данные с начальными данными (imageUrl, accessoryConfig)
+            this.state.currentPet = {
+              ...initialPet,
+              ...parsed.currentPet,
+              // Сохраняем важные поля из начальных данных
+              imageUrl: initialPet.imageUrl || parsed.currentPet.imageUrl,
+              accessoryConfig: initialPet.accessoryConfig || parsed.currentPet.accessoryConfig,
+            };
+          } else {
+            this.state.currentPet = parsed.currentPet;
+          }
+        }
+        // Обновляем остальные поля состояния
+        this.state.currency = parsed.currency ?? this.state.currency;
+        this.state.ownedPets = parsed.ownedPets ?? this.state.ownedPets;
+        this.state.ownedItems = parsed.ownedItems ?? this.state.ownedItems;
+        // Обновляем shopItems, мержа с начальными данными
+        if (parsed.shopItems) {
+          this.state.shopItems = this.state.shopItems.map(initialItem => {
+            const savedItem = parsed.shopItems.find((s: any) => s.id === initialItem.id);
+            return savedItem ? { ...initialItem, ...savedItem } : initialItem;
+          });
+        }
       }
       
       const lastDecrease = localStorage.getItem('tamagotchi-last-decrease');

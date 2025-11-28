@@ -5,3 +5,8 @@
   height: 100%;
 }
 
+.shop-page__categories {
+  --category-row-vertical-position: 14%;
+  --category-row-gap: 4%;
+}
+

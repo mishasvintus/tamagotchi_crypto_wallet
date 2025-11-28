@@ -1,0 +1,32 @@
+.category-row {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: var(--category-row-vertical-position, 15%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--category-row-gap, 2%);
+}
+
+.category-row .category-button {
+  position: relative;
+  left: auto;
+  transform: none;
+  bottom: auto;
+}
+
+.category-row .category-button:hover {
+  transform: scale(1.15);
+}
+
+.category-row .category-button--active {
+  transform: none;
+}
+
+.category-row .category-button--active:hover {
+  transform: scale(1.15);
+}
+
+

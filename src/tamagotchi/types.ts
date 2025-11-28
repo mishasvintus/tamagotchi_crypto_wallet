@@ -39,6 +39,8 @@ export interface Pet {
   equippedHat?: ItemId;
   equippedShoes?: ItemId;
   accessoryConfig?: PetAccessoryConfig; // Конфигурация позиционирования аксессуаров
+  scale?: number; // Масштаб тела питомца (1.0 = 100%, по умолчанию 1.0)
+  verticalOffset?: number; // Вертикальное смещение спрайта в процентах (положительное = вниз, отрицательное = вверх, по умолчанию 0)
 }
 
 export interface ShopItem {

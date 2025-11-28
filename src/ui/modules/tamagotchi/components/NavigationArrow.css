@@ -1,0 +1,58 @@
+.navigation-arrow {
+  position: absolute;
+  width: 8%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 0.125rem solid #ddd;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  font-size: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.navigation-arrow--left {
+  left: 5%;
+}
+
+.navigation-arrow--right {
+  right: 5%;
+}
+
+.navigation-arrow:hover {
+  background: #e0e0e0;
+  transform: translateY(-50%) scale(1.15);
+}
+
+.navigation-arrow--left:hover {
+  transform: translateY(-50%) scale(1.15);
+}
+
+.navigation-arrow--right:hover {
+  transform: translateY(-50%) scale(1.15);
+}
+
+.navigation-arrow:active {
+  transform: translateY(-50%) scale(0.9);
+}
+
+.navigation-arrow__symbol {
+  font-size: 1.2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+

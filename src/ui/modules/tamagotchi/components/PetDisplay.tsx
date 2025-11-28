@@ -23,6 +23,9 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
         : null);
 
   const config: PetAccessoryConfig = pet.accessoryConfig || {};
+  // Убеждаемся, что scale всегда валидное число
+  const bodyScale = typeof pet.scale === 'number' && pet.scale > 0 ? pet.scale : 1.0;
+  const verticalOffset = typeof pet.verticalOffset === 'number' ? pet.verticalOffset : 0;
 
   // Функция для рендеринга изображения или эмодзи
   const renderImageOrEmoji = (imageUrl: string | undefined, emoji: string) => {
@@ -33,10 +36,23 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
   };
 
   return (
-    <div className="pet-display">
+    <div 
+      className="pet-display"
+      style={{
+        top: `calc(var(--pet-display-top, 30%) + ${verticalOffset}%)`,
+      }}
+    >
       <div className="pet-display__sprite">
         {/* Тело (основа) */}
-        <div className="pet-display__part pet-display__part--body">
+        <div 
+          className="pet-display__part pet-display__part--body"
+          style={{
+            transform: `translate(-50%, -50%)`,
+            width: `${100 * bodyScale}%`,
+            height: `${100 * bodyScale}%`,
+            willChange: 'width, height',
+          }}
+        >
           {renderImageOrEmoji(pet.imageUrl, pet.emoji)}
         </div>
         

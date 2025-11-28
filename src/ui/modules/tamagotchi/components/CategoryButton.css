@@ -1,29 +1,41 @@
 .category-button {
-  width: 7%;
+  position: absolute;
+  width: 10%;
   aspect-ratio: 1;
   border-radius: 50%;
   border: 0.125rem solid #ddd;
   background: #f0f0f0;
-  font-size: 2rem;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  font-size: 0;
 }
 
 .category-button:hover {
   background: #e0e0e0;
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 .category-button--active {
   background: #4caf50;
-  border-color: #4caf50;
-  transform: scale(1.1);
+  border-color: #45a049;
+}
+
+.category-button--active:hover {
+  background: #45a049;
+  border-color: #45a049;
+  transform: scale(1.15);
 }
 
 .category-button__emoji {
-  display: block;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 

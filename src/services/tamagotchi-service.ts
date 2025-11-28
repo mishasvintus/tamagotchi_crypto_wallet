@@ -4,32 +4,94 @@ import type {
   FoodItem, 
   ActivityItem, 
   ShopCategory,
-  TamagotchiState 
+  TamagotchiState,
+  PetAccessoryConfig,
 } from '@/tamagotchi/types';
+
+const DEFAULT_ACCESSORY_CONFIG: PetAccessoryConfig = {
+  hat: { x: 50, y: 8, scale: 0.75 },
+  leftShoe: { x: 35, y: 88, scale: 0.55 },
+  rightShoe: { x: 65, y: 88, scale: 0.55 },
+};
 
 // Начальные данные игры
 const INITIAL_PETS: Pet[] = [
   {
-    id: 'cat-1',
-    name: 'Sad Boy',
-    emoji: '🐱', // Fallback
-    imageUrl: '/assets/pets/sad_boy.png',
-    happiness: 80,
+    id: 'pet-cat',
+    name: 'Cat',
+    emoji: '🐱',
+    imageUrl: '/assets/pets/cat.png',
+    happiness: 75,
     fullness: 70,
-    accessoryConfig: {
-      // Конфигурация будет добавлена позже, когда появятся аксессуары
-      hat: { x: 50, y: 10, scale: 0.8 },
-      leftShoe: { x: 35, y: 85, scale: 0.6 },
-      rightShoe: { x: 65, y: 85, scale: 0.6 },
-    },
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.0,
+    verticalOffset: 0,
+  },
+  {
+    id: 'pet-dog',
+    name: 'Dog',
+    emoji: '🐶',
+    imageUrl: '/assets/pets/dog.png',
+    happiness: 85,
+    fullness: 60,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.1,
+    verticalOffset: 0.5,
+  },
+  {
+    id: 'pet-fox',
+    name: 'Fox',
+    emoji: '🦊',
+    imageUrl: '/assets/pets/fox.png',
+    happiness: 70,
+    fullness: 65,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.14,
+    verticalOffset: -0.6,
+  },
+  {
+    id: 'pet-cow',
+    name: 'Cow',
+    emoji: '🐮',
+    imageUrl: '/assets/pets/cow.png',
+    happiness: 65,
+    fullness: 80,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.3,
+    verticalOffset: -3,
+  },
+  {
+    id: 'pet-dragon',
+    name: 'Dragon',
+    emoji: '🐉',
+    imageUrl: '/assets/pets/dragon.png',
+    happiness: 90,
+    fullness: 90,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.08,
+    verticalOffset: 0.4,
+  },
+  {
+    id: 'pet-vampire',
+    name: 'Vampire',
+    emoji: '🧛',
+    imageUrl: '/assets/pets/vampire.png',
+    happiness: 60,
+    fullness: 60,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.14,
+    verticalOffset: 0.4,
   },
 ];
 
 const INITIAL_SHOP_ITEMS: ShopItem[] = [
   // Питомцы
-  { id: 'pet-cat', name: 'Котик', emoji: '🐱', category: 'pets', price: 100, owned: true },
-  { id: 'pet-dog', name: 'Собачка', emoji: '🐶', category: 'pets', price: 150, owned: false },
-  { id: 'pet-dragon', name: 'Дракон', emoji: '🐉', category: 'pets', price: 300, owned: false },
+  { id: 'pet-cat', name: 'Cat', emoji: '🐱', imageUrl: '/assets/pets/cat.png', category: 'pets', price: 0, owned: true },
+  { id: 'pet-dog', name: 'Dog', emoji: '🐶', imageUrl: '/assets/pets/dog.png', category: 'pets', price: 150, owned: false },
+  { id: 'pet-fox', name: 'Fox', emoji: '🦊', imageUrl: '/assets/pets/fox.png', category: 'pets', price: 180, owned: false },
+  { id: 'pet-cow', name: 'Cow', emoji: '🐮', imageUrl: '/assets/pets/cow.png', category: 'pets', price: 200, owned: false },
+  { id: 'pet-dragon', name: 'Dragon', emoji: '🐉', imageUrl: '/assets/pets/dragon.png', category: 'pets', price: 300, owned: false },
+  { id: 'pet-vampire', name: 'Vampire', emoji: '🧛', imageUrl: '/assets/pets/vampire.png', category: 'pets', price: 350, owned: false },
   
   // Шляпы
   { id: 'hat-wizard', name: 'Волшебная шляпа', emoji: '🎩', category: 'hats', price: 50, owned: false },
@@ -63,8 +125,9 @@ export class TamagotchiService {
 
   constructor() {
     // Инициализация с начальными данными
+    const defaultPet = INITIAL_PETS.find(p => p.id === 'pet-cat') || INITIAL_PETS[0];
     this.state = {
-      currentPet: INITIAL_PETS[0],
+      currentPet: defaultPet,
       currency: 150,
       ownedPets: ['pet-cat'],
       ownedItems: [],
@@ -315,6 +378,11 @@ export class TamagotchiService {
     return INITIAL_ACTIVITIES;
   }
 
+  // Получить начальные данные питомца по id
+  getInitialPet(petId: string): Pet | undefined {
+    return INITIAL_PETS.find(p => p.id === petId);
+  }
+
 
   // Сохранение в localStorage
   private saveToStorage(): void {
@@ -342,13 +410,17 @@ export class TamagotchiService {
         if (parsed.currentPet) {
           const initialPet = INITIAL_PETS.find(p => p.id === parsed.currentPet.id);
           if (initialPet) {
-            // Объединяем сохраненные данные с начальными данными (imageUrl, accessoryConfig)
+            // Объединяем сохраненные данные с начальными данными (imageUrl, accessoryConfig, scale)
             this.state.currentPet = {
               ...initialPet,
               ...parsed.currentPet,
               // Сохраняем важные поля из начальных данных
               imageUrl: initialPet.imageUrl || parsed.currentPet.imageUrl,
               accessoryConfig: initialPet.accessoryConfig || parsed.currentPet.accessoryConfig,
+              // Сохраняем scale из сохраненных данных, если есть, иначе из начальных данных, иначе дефолт 1.0
+              scale: parsed.currentPet.scale ?? initialPet.scale ?? 1.0,
+              // Сохраняем verticalOffset из сохраненных данных, если есть, иначе из начальных данных, иначе дефолт 0
+              verticalOffset: parsed.currentPet.verticalOffset ?? initialPet.verticalOffset ?? 0,
             };
           } else {
             this.state.currentPet = parsed.currentPet;

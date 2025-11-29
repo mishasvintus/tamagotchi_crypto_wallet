@@ -9,10 +9,21 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@scure/bip32": "^2.0.1",
+    "@scure/bip39": "^2.0.1",
+    "axios": "^1.13.2",
+    "bip39": "^3.1.0",
+    "buffer": "^6.0.3",
+    "crypto-js": "^4.2.0",
+    "ethers": "^6.15.0",
+    "qrcode": "^1.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/bip39": "^2.4.2",
+    "@types/crypto-js": "^4.2.2",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
@@ -25,5 +36,3 @@
     "vite": "^5.0.8"
   }
 }
-
-

@@ -383,6 +383,36 @@ export class TamagotchiService {
     return INITIAL_PETS.find(p => p.id === petId);
   }
 
+  // Награда за действие в кошельке
+  rewardForWalletAction(action: 'created' | 'transaction-sent' | 'transaction-received'): void {
+    let currencyReward = 0;
+    let happinessReward = 0;
+
+    switch (action) {
+      case 'created':
+        currencyReward = 50; // Награда за создание кошелька
+        happinessReward = 20;
+        break;
+      case 'transaction-sent':
+        currencyReward = 10; // Награда за отправку транзакции
+        happinessReward = 10;
+        break;
+      case 'transaction-received':
+        currencyReward = 15; // Награда за получение транзакции
+        happinessReward = 15;
+        break;
+    }
+
+    // Увеличиваем валюту
+    this.state.currency += currencyReward;
+
+    // Увеличиваем счастье (с ограничением до 100)
+    this.state.currentPet.happiness = Math.min(100, this.state.currentPet.happiness + happinessReward);
+
+    // Сохраняем изменения
+    this.saveToStorage();
+  }
+
 
   // Сохранение в localStorage
   private saveToStorage(): void {

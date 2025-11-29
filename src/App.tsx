@@ -1,14 +1,11 @@
 import { TamagotchiModule } from './ui/modules/tamagotchi/TamagotchiModule'
+import { WalletModule } from './ui/modules/wallet/WalletModule'
 import './App.css'
 
 function App() {
   return (
     <div className="app">
-      {/* TODO: WalletModule будет добавлен позже */}
-      <div className="app__wallet-placeholder">
-        <p>Wallet Module (будет добавлен позже)</p>
-      </div>
-      
+      <WalletModule />
       <TamagotchiModule />
     </div>
   )

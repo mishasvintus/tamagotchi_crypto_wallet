@@ -1,0 +1,140 @@
+.transaction-item {
+    padding: 1rem;
+    background-color: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s;
+}
+
+.transaction-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+.transaction-item--failed {
+    border-color: #fcc;
+    background-color: #fff5f5;
+}
+
+.transaction-item__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.transaction-item__type {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.transaction-item__icon {
+    font-size: 1.2rem;
+}
+
+.transaction-item__icon--sent {
+    color: #f5576c;
+}
+
+.transaction-item__icon--received {
+    color: #28a745;
+}
+
+.transaction-item__type-text {
+    font-weight: 600;
+    color: #333;
+}
+
+.transaction-item__status {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.transaction-item__status--pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.transaction-item__status--confirmed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.transaction-item__status--failed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.transaction-item__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.transaction-item__value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.transaction-item__value--sent {
+    color: #f5576c;
+}
+
+.transaction-item__value--received {
+    color: #28a745;
+}
+
+.transaction-item__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.transaction-item__detail {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.transaction-item__detail-label {
+    color: #666;
+    font-weight: 500;
+    min-width: 60px;
+}
+
+.transaction-item__detail-value {
+    color: #333;
+    word-break: break-all;
+}
+
+.transaction-item__hash {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.transaction-item__hash-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.transaction-item__hash-link {
+    color: #667eea;
+    text-decoration: none;
+    font-family: 'Courier New', monospace;
+    transition: color 0.2s;
+}
+
+.transaction-item__hash-link:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}

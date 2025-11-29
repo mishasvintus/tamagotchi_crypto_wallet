@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { eventBus } from '@/services/event-bus';
+import { tamagotchiService } from '@/services/tamagotchi-service';
 import { HomePage } from './pages/HomePage';
 import { ShopPage } from './pages/ShopPage';
 import { StatPage } from './pages/StatPage';
@@ -12,6 +14,44 @@ export function TamagotchiModule() {
   const navigateToPage = (page: TamagotchiPage) => {
     setCurrentPage(page);
   };
+
+  // Интеграция с событиями кошелька
+  useEffect(() => {
+    // Слушаем событие создания кошелька
+    const unsubscribeCreated = eventBus.on('wallet:created', (data) => {
+      tamagotchiService.rewardForWalletAction('created');
+      // Можно добавить визуальную обратную связь (например, уведомление)
+      console.log('🎉 Кошелёк создан! Питомец получил награду!', data);
+    });
+
+    // Слушаем событие отправки транзакции
+    const unsubscribeSent = eventBus.on('wallet:transaction-sent', (data) => {
+      tamagotchiService.rewardForWalletAction('transaction-sent');
+      console.log('📤 Транзакция отправлена! Питомец радуется!', data);
+    });
+
+    // Слушаем событие получения транзакции
+    const unsubscribeReceived = eventBus.on('wallet:transaction-received', (data) => {
+      tamagotchiService.rewardForWalletAction('transaction-received');
+      console.log('📥 Транзакция получена! Питомец празднует!', data);
+    });
+
+    // Слушаем событие изменения баланса
+    const unsubscribeBalance = eventBus.on('wallet:balance-changed', (data) => {
+      // Опциональная реакция на изменение баланса
+      if (data && parseFloat(data.balance) > parseFloat(data.previousBalance || '0')) {
+        console.log('💰 Баланс увеличился!', data);
+      }
+    });
+
+    // Очистка подписок при размонтировании
+    return () => {
+      unsubscribeCreated();
+      unsubscribeSent();
+      unsubscribeReceived();
+      unsubscribeBalance();
+    };
+  }, []);
 
   return (
     <div className="tamagotchi-module">

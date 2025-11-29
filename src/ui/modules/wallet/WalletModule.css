@@ -1,0 +1,31 @@
+.wallet-module {
+    padding: 1rem;
+    border-bottom: 2px solid #e0e0e0;
+    background-color: #f9f9f9;
+}
+
+.wallet-module__header {
+    margin-bottom: 1rem;
+}
+
+.wallet-module__header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.wallet-module__content {
+    min-height: 200px;
+}
+
+.wallet-module__placeholder {
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+}
+
+.wallet-module__hint {
+    font-size: 0.9rem;
+    color: #999;
+    margin-top: 0.5rem;
+}

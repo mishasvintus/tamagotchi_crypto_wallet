@@ -1,0 +1,30 @@
+.qrcode-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+}
+
+.qrcode-display__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.qrcode-display__canvas-container {
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qrcode-display__canvas {
+    display: block;
+}
+
+.qrcode-display__error {
+    padding: 2rem;
+    color: #999;
+    text-align: center;
+}

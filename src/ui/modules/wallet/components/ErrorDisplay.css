@@ -1,0 +1,85 @@
+.error-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-display--error {
+    background-color: #fee;
+    border: 2px solid #fcc;
+    color: #c33;
+}
+
+.error-display--warning {
+    background-color: #fff3cd;
+    border: 2px solid #ffc107;
+    color: #856404;
+}
+
+.error-display--info {
+    background-color: #d1ecf1;
+    border: 2px solid #0c5460;
+    color: #0c5460;
+}
+
+.error-display__content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.error-display__icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.error-display__message {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.error-display__dismiss {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 1rem;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+}
+
+.error-display__dismiss:hover {
+    opacity: 1;
+}
+
+.error-display__dismiss:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 4px;
+}

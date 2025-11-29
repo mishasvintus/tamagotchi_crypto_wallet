@@ -1,0 +1,36 @@
+.wallet-balance {
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.wallet-balance__label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+.wallet-balance__value {
+    font-size: 2rem;
+    font-weight: bold;
+    word-break: break-all;
+}
+
+.wallet-balance__value--loading {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+.wallet-balance__value--error {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.wallet-balance__currency {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-left: 0.5rem;
+}

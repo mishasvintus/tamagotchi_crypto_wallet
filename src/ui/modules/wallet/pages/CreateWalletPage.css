@@ -1,0 +1,153 @@
+.create-wallet-page {
+    padding: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.create-wallet-page__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #333;
+}
+
+.create-wallet-page__options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.create-wallet-page__option {
+    padding: 1.5rem;
+    background-color: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.create-wallet-page__option:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.create-wallet-page__option-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.create-wallet-page__option-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.create-wallet-page__option-description {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.create-wallet-page__form-group {
+    margin-bottom: 1.5rem;
+}
+
+.create-wallet-page__label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.create-wallet-page__input,
+.create-wallet-page__textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.create-wallet-page__input:focus,
+.create-wallet-page__textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.create-wallet-page__textarea {
+    resize: vertical;
+    font-family: 'Courier New', monospace;
+}
+
+.create-wallet-page__hint {
+    font-size: 0.85rem;
+    color: #999;
+    margin-top: 0.25rem;
+}
+
+.create-wallet-page__error {
+    padding: 1rem;
+    background-color: #fee;
+    border: 2px solid #fcc;
+    border-radius: 8px;
+    color: #c33;
+    margin-bottom: 1rem;
+}
+
+.create-wallet-page__success {
+    padding: 1rem;
+    background-color: #dfd;
+    border: 2px solid #9c9;
+    border-radius: 8px;
+    color: #363;
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.create-wallet-page__actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.create-wallet-page__cancel-btn,
+.create-wallet-page__submit-btn {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.create-wallet-page__cancel-btn {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.create-wallet-page__cancel-btn:hover:not(:disabled) {
+    background-color: #e0e0e0;
+}
+
+.create-wallet-page__submit-btn {
+    background-color: #667eea;
+    color: white;
+}
+
+.create-wallet-page__submit-btn:hover:not(:disabled) {
+    background-color: #5568d3;
+}
+
+.create-wallet-page__cancel-btn:disabled,
+.create-wallet-page__submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

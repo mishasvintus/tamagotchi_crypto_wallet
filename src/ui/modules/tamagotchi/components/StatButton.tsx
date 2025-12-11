@@ -26,7 +26,7 @@ export function StatButton({ emoji, value, onClick, absolute = false }: StatButt
             r={radius}
             fill="none"
             stroke="#e0e0e0"
-            strokeWidth="6"
+            strokeWidth="5"
           />
           {/* Заполненный круг */}
           <circle
@@ -35,7 +35,7 @@ export function StatButton({ emoji, value, onClick, absolute = false }: StatButt
             r={radius}
             fill="none"
             stroke="#4caf50"
-            strokeWidth="6"
+            strokeWidth="5"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             strokeLinecap="round"

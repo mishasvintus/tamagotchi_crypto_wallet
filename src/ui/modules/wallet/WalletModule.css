@@ -1,7 +1,12 @@
 .wallet-module {
     padding: 1rem;
-    border-bottom: 2px solid #e0e0e0;
+    border-right: 2px solid #e0e0e0;
     background-color: #f9f9f9;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
 .wallet-module__header {
@@ -12,6 +17,7 @@
     margin: 0;
     font-size: 1.5rem;
     color: #333;
+    text-align: center;
 }
 
 .wallet-module__content {

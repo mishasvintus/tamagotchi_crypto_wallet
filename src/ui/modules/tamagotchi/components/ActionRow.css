@@ -4,8 +4,9 @@
   left: 0;
   right: 0;
   bottom: var(--row-vertical-position, 0);
-  --row-vertical-position: 26%;
+  --row-vertical-position: 28%;
   --row-gap: 2%;
+  --action-button-size: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,5 +18,11 @@
   left: auto;
   transform: none;
   bottom: auto;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: var(--action-button-size, 10%);
+  flex-basis: var(--action-button-size, 10%);
+  min-width: var(--action-button-size, 10%);
+  max-width: var(--action-button-size, 10%);
 }
 

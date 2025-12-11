@@ -1,9 +1,11 @@
 .tamagotchi-module {
-  height: 80%;
+  width: 50%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 2%;
   background: #fff;
   font-size: 2.4%;
+  overflow-y: auto;
 }
 

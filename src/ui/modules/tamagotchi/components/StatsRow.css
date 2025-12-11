@@ -5,11 +5,12 @@
   right: 0;
   bottom: var(--row-vertical-position, 0);
   --row-vertical-position: 10%;
-  --row-gap: 12%;
+  --row-gap: 20%;
 }
 
 .stats-row .stat-button {
   bottom: 0;
+  transform-origin: center center;
 }
 
 .stats-row .stat-button:nth-child(1) {

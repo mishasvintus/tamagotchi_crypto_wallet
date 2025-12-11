@@ -1,6 +1,6 @@
 .action-button {
   position: absolute;
-  width: 10%;
+  width: var(--action-button-size, 10%);
   aspect-ratio: 1;
   border-radius: 50%;
   border: 0.125rem solid #ddd;
@@ -27,7 +27,7 @@
 }
 
 .action-button__emoji {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   line-height: 1;
   display: flex;
   align-items: center;

@@ -6,8 +6,8 @@
   width: var(--pet-display-size, 30%);
   aspect-ratio: 1;
   /* Глобальные настройки размера и расположения питомца */
-  --pet-display-top: 30%;
-  --pet-display-size: 40%;
+  --pet-display-top: 25%;
+  --pet-display-size: 45%;
   transition: none;
 }
 

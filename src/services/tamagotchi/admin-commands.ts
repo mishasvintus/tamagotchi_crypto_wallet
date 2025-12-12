@@ -1,5 +1,6 @@
 import { tamagotchiService } from './tamagotchi-service';
 import { INITIAL_PETS } from './constants';
+import { eventBus } from '../event-bus';
 
 export const adminCommands = {
   addMoney(amount: number): void {
@@ -149,6 +150,44 @@ export const adminCommands = {
     }
   },
 
+  triggerWalletCreated(): void {
+    eventBus.emit('wallet:created', {
+      address: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+    });
+    console.log('✅ Событие wallet:created инициировано');
+  },
+
+  triggerTransactionSent(amount: string = '0.01'): void {
+    eventBus.emit('wallet:transaction-sent', {
+      hash: '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      from: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      to: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      value: amount,
+      type: 'sent',
+    });
+    console.log(`✅ Событие wallet:transaction-sent инициировано (сумма: ${amount} ETH)`);
+  },
+
+  triggerTransactionReceived(amount: string = '0.1'): void {
+    eventBus.emit('wallet:transaction-received', {
+      hash: '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      from: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      to: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      value: amount,
+      type: 'received',
+    });
+    console.log(`✅ Событие wallet:transaction-received инициировано (сумма: ${amount} ETH)`);
+  },
+
+  triggerBalanceChanged(amount: string = '1.0'): void {
+    eventBus.emit('wallet:balance-changed', {
+      address: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      balance: amount,
+      previousBalance: '0.5',
+    });
+    console.log(`✅ Событие wallet:balance-changed инициировано (баланс: ${amount} ETH)`);
+  },
+
   help(): void {
     console.log(`
 🎮 Админские команды для Tamagotchi:
@@ -168,6 +207,12 @@ export const adminCommands = {
   admin.setHappiness(value)   - Установить счастье (0-100)
   admin.setFullness(value)    - Установить сытость (0-100)
 
+🎯 События:
+  admin.triggerWalletCreated()              - Инициировать событие создания кошелька
+  admin.triggerTransactionSent(amount?)     - Инициировать событие отправки транзакции
+  admin.triggerTransactionReceived(amount?)  - Инициировать событие получения транзакции (покажет анимацию)
+  admin.triggerBalanceChanged(amount?)      - Инициировать событие изменения баланса
+
 🔄 Сброс:
   admin.resetAll()            - Полный сброс всех данных
 
@@ -179,6 +224,7 @@ export const adminCommands = {
   admin.fastForwardTime(30)
   admin.giveItem('hat-cap')
   admin.setHappiness(100)
+  admin.triggerTransactionReceived('0.5')
     `);
   },
 };

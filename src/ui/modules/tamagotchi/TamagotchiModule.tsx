@@ -4,12 +4,14 @@ import { tamagotchiService } from '@/services/tamagotchi-service';
 import { HomePage } from './pages/HomePage';
 import { ShopPage } from './pages/ShopPage';
 import { StatPage } from './pages/StatPage';
+import { MoneyAnimation } from './components/MoneyAnimation';
 import './TamagotchiModule.css';
 
 export type TamagotchiPage = 'home' | 'shop' | 'entertainment' | 'food';
 
 export function TamagotchiModule() {
   const [currentPage, setCurrentPage] = useState<TamagotchiPage>('home');
+  const [moneyAnimation, setMoneyAnimation] = useState<{ amount: number; key: number } | null>(null);
 
   const navigateToPage = (page: TamagotchiPage) => {
     setCurrentPage(page);
@@ -20,20 +22,29 @@ export function TamagotchiModule() {
     // Слушаем событие создания кошелька
     const unsubscribeCreated = eventBus.on('wallet:created', (data) => {
       tamagotchiService.rewardForWalletAction('created');
-      // Можно добавить визуальную обратную связь (например, уведомление)
       console.log('🎉 Кошелёк создан! Питомец получил награду!', data);
+      setMoneyAnimation({ amount: 50, key: Date.now() });
     });
 
     // Слушаем событие отправки транзакции
-    const unsubscribeSent = eventBus.on('wallet:transaction-sent', (data) => {
+    const unsubscribeSent = eventBus.on('wallet:transaction-sent', (data: any) => {
       tamagotchiService.rewardForWalletAction('transaction-sent');
       console.log('📤 Транзакция отправлена! Питомец радуется!', data);
+      setMoneyAnimation({ amount: 10, key: Date.now() });
     });
 
     // Слушаем событие получения транзакции
-    const unsubscribeReceived = eventBus.on('wallet:transaction-received', (data) => {
+    const unsubscribeReceived = eventBus.on('wallet:transaction-received', (data: any) => {
       tamagotchiService.rewardForWalletAction('transaction-received');
       console.log('📥 Транзакция получена! Питомец празднует!', data);
+      
+      if (data?.value) {
+        const amount = parseFloat(data.value);
+        const displayAmount = Math.ceil(amount * 100) || 15;
+        setMoneyAnimation({ amount: displayAmount, key: Date.now() });
+      } else {
+        setMoneyAnimation({ amount: 15, key: Date.now() });
+      }
     });
 
     // Слушаем событие изменения баланса
@@ -59,6 +70,13 @@ export function TamagotchiModule() {
       {currentPage === 'shop' && <ShopPage onNavigate={navigateToPage} />}
       {currentPage === 'entertainment' && <StatPage type="entertainment" onNavigate={navigateToPage} />}
       {currentPage === 'food' && <StatPage type="food" onNavigate={navigateToPage} />}
+      {moneyAnimation && (
+        <MoneyAnimation
+          key={moneyAnimation.key}
+          amount={moneyAnimation.amount}
+          onComplete={() => setMoneyAnimation(null)}
+        />
+      )}
     </div>
   );
 }

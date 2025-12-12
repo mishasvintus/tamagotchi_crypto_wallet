@@ -1,0 +1,133 @@
+.money-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.money-animation__banknote {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 2rem;
+  animation-delay: var(--delay);
+  opacity: 0;
+}
+
+.money-animation__amount {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #4caf50;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: fadeUp 2s ease-out forwards;
+  z-index: 1001;
+}
+
+@keyframes flyAway {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(360deg) scale(0.5);
+  }
+}
+
+.money-animation__banknote--1 {
+  animation: flyAway1 2s ease-out forwards;
+}
+
+.money-animation__banknote--2 {
+  animation: flyAway2 2s ease-out forwards;
+}
+
+.money-animation__banknote--3 {
+  animation: flyAway3 2s ease-out forwards;
+}
+
+.money-animation__banknote--4 {
+  animation: flyAway4 2s ease-out forwards;
+}
+
+.money-animation__banknote--5 {
+  animation: flyAway5 2s ease-out forwards;
+}
+
+.money-animation__banknote--6 {
+  animation: flyAway6 2s ease-out forwards;
+}
+
+.money-animation__banknote--7 {
+  animation: flyAway7 2s ease-out forwards;
+}
+
+.money-animation__banknote--8 {
+  animation: flyAway8 2s ease-out forwards;
+}
+
+@keyframes flyAway1 {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + 200px), calc(-50% - 200px)) rotate(360deg) scale(0.5); }
+}
+
+@keyframes flyAway2 {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + 141px), calc(-50% - 141px)) rotate(360deg) scale(0.5); }
+}
+
+@keyframes flyAway3 {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + 0px), calc(-50% - 200px)) rotate(360deg) scale(0.5); }
+}
+
+@keyframes flyAway4 {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% - 141px), calc(-50% - 141px)) rotate(360deg) scale(0.5); }
+}
+
+@keyframes flyAway5 {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% - 200px), calc(-50% - 0px)) rotate(360deg) scale(0.5); }
+}
+
+@keyframes flyAway6 {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% - 141px), calc(-50% + 141px)) rotate(360deg) scale(0.5); }
+}
+
+@keyframes flyAway7 {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + 0px), calc(-50% + 200px)) rotate(360deg) scale(0.5); }
+}
+
+@keyframes flyAway8 {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + 141px), calc(-50% + 141px)) rotate(360deg) scale(0.5); }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50px);
+  }
+}
+

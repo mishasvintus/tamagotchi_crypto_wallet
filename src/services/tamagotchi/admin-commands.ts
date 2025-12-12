@@ -24,14 +24,47 @@ export const adminCommands = {
 
   fastForwardTime(minutes: number): void {
     const decreaseTimer = (tamagotchiService as any).decreaseTimer;
-    if (decreaseTimer) {
+    const stateManager = (tamagotchiService as any).stateManager;
+    if (decreaseTimer && stateManager) {
       const now = Date.now();
       const milliseconds = minutes * 60 * 1000;
-      (decreaseTimer as any).lastDecreaseTime = now - milliseconds;
-      decreaseTimer.applyTimeBasedDecrease();
-      console.log(`✅ Время прокручено на ${minutes} минут. Статы уменьшены.`);
+      const oldLastDecrease = (decreaseTimer as any).lastDecreaseTime;
+      (decreaseTimer as any).lastDecreaseTime = oldLastDecrease - milliseconds;
+      
+      const tenMinutesInMs = 10 * 60 * 1000;
+      let happinessDecreased = 0;
+      let fullnessDecreased = 0;
+      
+      for (let i = 0; i < minutes; i++) {
+        const checkTime = (decreaseTimer as any).lastDecreaseTime + (i * 60000);
+        const lastFullHappiness = (decreaseTimer as any).lastFullHappinessTime;
+        const lastFullFullness = (decreaseTimer as any).lastFullFullnessTime;
+        
+        const canDecreaseHappiness = lastFullHappiness === null || (checkTime - lastFullHappiness) >= tenMinutesInMs;
+        const canDecreaseFullness = lastFullFullness === null || (checkTime - lastFullFullness) >= tenMinutesInMs;
+        
+        if (canDecreaseHappiness) {
+          const current = stateManager.getCurrentPet().happiness;
+          if (current > 0) {
+            stateManager.setHappiness(Math.max(0, current - 1));
+            happinessDecreased++;
+          }
+        }
+        if (canDecreaseFullness) {
+          const current = stateManager.getCurrentPet().fullness;
+          if (current > 0) {
+            stateManager.setFullness(Math.max(0, current - 1));
+            fullnessDecreased++;
+          }
+        }
+      }
+      
+      (decreaseTimer as any).lastDecreaseTime = now;
+      (decreaseTimer as any).onSave();
+      
+      console.log(`✅ Время прокручено на ${minutes} минут. Счастье уменьшено на ${happinessDecreased}, сытость на ${fullnessDecreased}.`);
     } else {
-      console.error('❌ Не удалось получить доступ к decreaseTimer');
+      console.error('❌ Не удалось получить доступ к decreaseTimer или stateManager');
     }
   },
 

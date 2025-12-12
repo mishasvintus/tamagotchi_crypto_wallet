@@ -44,6 +44,11 @@
   font-size: 20em;
 }
 
+.pet-display__part--hat-independent {
+  position: absolute;
+  /* Позиционируется относительно pet-display, а не pet-display__sprite */
+}
+
 .pet-display__part--shoe {
   z-index: 1;
   font-size: 20em;

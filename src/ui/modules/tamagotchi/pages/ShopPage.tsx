@@ -245,9 +245,9 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
       </div>
       {displayedPet && (
         <PetDisplay 
-          key={`${displayedPet.id}-${activeCategory === 'hats' ? currentHat?.id || 'none' : ''}-${updateKey}`} 
+          key={`${displayedPet.id}-${activeCategory === 'hats' ? currentHat?.id || 'none' : state.currentPet.equippedHat || 'none'}-${updateKey}`} 
           pet={displayedPet}
-          previewHat={activeCategory === 'hats' ? currentHat : undefined}
+          previewHat={activeCategory === 'hats' ? currentHat : (state.currentPet.equippedHat ? state.shopItems.find(item => item.id === state.currentPet.equippedHat) || undefined : undefined)}
         />
       )}
       <NavigationArrow direction="left" onClick={handlePrevious} />

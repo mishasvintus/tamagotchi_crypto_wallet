@@ -1,0 +1,77 @@
+import type { Pet, PetAccessoryConfig } from '@/tamagotchi/types';
+
+const DEFAULT_ACCESSORY_CONFIG: PetAccessoryConfig = {
+  hat: { x: 50, y: 8, scale: 0.75 },
+  leftShoe: { x: 35, y: 88, scale: 0.55 },
+  rightShoe: { x: 65, y: 88, scale: 0.55 },
+};
+
+export const INITIAL_PETS: Pet[] = [
+  {
+    id: 'pet-cat',
+    name: 'Cat',
+    emoji: '🐱',
+    imageUrl: '/assets/pets/cat.png',
+    happiness: 75,
+    fullness: 70,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.0,
+    verticalOffset: 0,
+  },
+  {
+    id: 'pet-dog',
+    name: 'Dog',
+    emoji: '🐶',
+    imageUrl: '/assets/pets/dog.png',
+    happiness: 85,
+    fullness: 60,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.1,
+    verticalOffset: 1.9,
+  },
+  {
+    id: 'pet-fox',
+    name: 'Fox',
+    emoji: '🦊',
+    imageUrl: '/assets/pets/fox.png',
+    happiness: 70,
+    fullness: 65,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.135,
+    verticalOffset: -2.2,
+  },
+  {
+    id: 'pet-cow',
+    name: 'Cow',
+    emoji: '🐮',
+    imageUrl: '/assets/pets/cow.png',
+    happiness: 65,
+    fullness: 80,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.3,
+    verticalOffset: -8.5,
+  },
+  {
+    id: 'pet-dragon',
+    name: 'Dragon',
+    emoji: '🐉',
+    imageUrl: '/assets/pets/dragon.png',
+    happiness: 90,
+    fullness: 90,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.08,
+    verticalOffset: 0.4,
+  },
+  {
+    id: 'pet-vampire',
+    name: 'Vampire',
+    emoji: '🧛',
+    imageUrl: '/assets/pets/vampire.png',
+    happiness: 60,
+    fullness: 60,
+    accessoryConfig: { ...DEFAULT_ACCESSORY_CONFIG },
+    scale: 1.14,
+    verticalOffset: 0.4,
+  },
+];
+

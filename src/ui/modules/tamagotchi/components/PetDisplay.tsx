@@ -43,7 +43,7 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
     <div 
       className="pet-display"
       style={{
-        top: `calc(var(--pet-display-top, 30%) + ${verticalOffset}%)`,
+        top: `var(--pet-display-top, 30%)`,
       }}
     >
       <div className="pet-display__sprite">
@@ -51,7 +51,7 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
         <div 
           className="pet-display__part pet-display__part--body"
           style={{
-            transform: `translate(-50%, -50%)`,
+            transform: `translate(-50%, calc(-50% + ${verticalOffset}%))`,
             width: `${100 * bodyScale}%`,
             height: `${100 * bodyScale}%`,
             willChange: 'width, height',
@@ -59,22 +59,6 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
         >
           {renderImageOrEmoji(pet.imageUrl, pet.emoji)}
         </div>
-        
-        {/* Шляпа */}
-        {hat && hatConfig && (
-          <div 
-            className="pet-display__part pet-display__part--hat"
-            style={{
-              left: `${hatConfig.x}%`,
-              top: `${hatConfig.y}%`,
-              transform: `translate(-50%, -50%) scale(${hatConfig.scale})${hatConfig.rotation ? ` rotate(${hatConfig.rotation}deg)` : ''}`,
-              width: '20em',
-              height: '20em',
-            }}
-          >
-            {renderImageOrEmoji(hat.imageUrl, hat.emoji)}
-          </div>
-        )}
         
         {/* Левый ботинок */}
         {shoes && config.leftShoe && (
@@ -104,6 +88,22 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
           </div>
         )}
       </div>
+      
+      {/* Шляпа - позиционируется относительно pet-display, независимо от verticalOffset */}
+      {hat && hatConfig && (
+        <div 
+          className="pet-display__part pet-display__part--hat pet-display__part--hat-independent"
+          style={{
+            left: `${hatConfig.x}%`,
+            top: `${hatConfig.y}%`,
+            transform: `translate(-50%, -50%) scale(${hatConfig.scale})${hatConfig.rotation ? ` rotate(${hatConfig.rotation}deg)` : ''}`,
+            width: '20em',
+            height: '20em',
+          }}
+        >
+          {renderImageOrEmoji(hat.imageUrl, hat.emoji)}
+        </div>
+      )}
     </div>
   );
 }

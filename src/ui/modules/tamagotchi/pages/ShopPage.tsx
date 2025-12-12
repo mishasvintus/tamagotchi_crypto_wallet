@@ -24,12 +24,18 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
   const state = tamagotchiService.getState();
   const [activeCategory, setActiveCategory] = useState<ShopCategory>('pets');
   const [currentPetIndex, setCurrentPetIndex] = useState(0);
+  const [currentHatIndex, setCurrentHatIndex] = useState(0);
 
   const categories = [
     { id: 'pets' as ShopCategory, emoji: '🧍' },
     { id: 'hats' as ShopCategory, emoji: '🎩' },
     { id: 'shoes' as ShopCategory, emoji: '👢' },
   ];
+
+  // Получаем список шляп
+  const availableHats = useMemo(() => {
+    return state.shopItems.filter(item => item.category === 'hats');
+  }, [state.shopItems]);
 
   // Получаем список питомцев из shopItems - предзагружаем все данные заранее
   const availablePets = useMemo(() => {
@@ -71,27 +77,69 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     });
   }, [state.shopItems, state.currentPet]);
 
-  // Текущий просматриваемый питомец - убеждаемся, что индекс валидный
-  const displayedPet = useMemo(() => {
-    if (availablePets.length === 0) return null;
-    const validIndex = currentPetIndex >= 0 && currentPetIndex < availablePets.length 
-      ? currentPetIndex 
+  // Текущая выбранная шляпа
+  const currentHat = useMemo(() => {
+    if (availableHats.length === 0) return null;
+    const validIndex = currentHatIndex >= 0 && currentHatIndex < availableHats.length 
+      ? currentHatIndex 
       : 0;
-    return availablePets[validIndex];
-  }, [availablePets, currentPetIndex]);
+    const hat = availableHats[validIndex];
+    // Если это "none", возвращаем null
+    return hat.id === 'hat-none' ? null : hat;
+  }, [availableHats, currentHatIndex]);
+
+  // Текущий просматриваемый питомец с предпросмотром шляпы
+  const displayedPet = useMemo(() => {
+    if (activeCategory === 'hats') {
+      // Показываем текущего питомца с предпросмотром выбранной шляпы
+      const pet = { ...state.currentPet };
+      return pet;
+    } else {
+      // Показываем питомцев как раньше
+      if (availablePets.length === 0) return null;
+      const validIndex = currentPetIndex >= 0 && currentPetIndex < availablePets.length 
+        ? currentPetIndex 
+        : 0;
+      return availablePets[validIndex];
+    }
+  }, [activeCategory, availablePets, currentPetIndex, state.currentPet]);
+
+  // Сброс индекса при смене категории
+  const handleCategoryChange = (category: ShopCategory) => {
+    setActiveCategory(category);
+    if (category === 'hats') {
+      setCurrentHatIndex(0);
+    } else {
+      setCurrentPetIndex(0);
+    }
+  };
 
   const handlePrevious = () => {
-    setCurrentPetIndex((prev) => {
-      const newIndex = prev === 0 ? availablePets.length - 1 : prev - 1;
-      return newIndex;
-    });
+    if (activeCategory === 'hats') {
+      setCurrentHatIndex((prev) => {
+        const newIndex = prev === 0 ? availableHats.length - 1 : prev - 1;
+        return newIndex;
+      });
+    } else {
+      setCurrentPetIndex((prev) => {
+        const newIndex = prev === 0 ? availablePets.length - 1 : prev - 1;
+        return newIndex;
+      });
+    }
   };
 
   const handleNext = () => {
-    setCurrentPetIndex((prev) => {
-      const newIndex = prev === availablePets.length - 1 ? 0 : prev + 1;
-      return newIndex;
-    });
+    if (activeCategory === 'hats') {
+      setCurrentHatIndex((prev) => {
+        const newIndex = prev === availableHats.length - 1 ? 0 : prev + 1;
+        return newIndex;
+      });
+    } else {
+      setCurrentPetIndex((prev) => {
+        const newIndex = prev === availablePets.length - 1 ? 0 : prev + 1;
+        return newIndex;
+      });
+    }
   };
 
   return (
@@ -105,10 +153,16 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
         <CategoryRow
           categories={categories}
           activeCategory={activeCategory}
-          onSelect={setActiveCategory}
+          onSelect={handleCategoryChange}
         />
       </div>
-      {displayedPet && <PetDisplay key={displayedPet.id} pet={displayedPet} />}
+      {displayedPet && (
+        <PetDisplay 
+          key={`${displayedPet.id}-${activeCategory === 'hats' ? currentHat?.id || 'none' : ''}`} 
+          pet={displayedPet}
+          previewHat={activeCategory === 'hats' ? currentHat : undefined}
+        />
+      )}
       <NavigationArrow direction="left" onClick={handlePrevious} />
       <NavigationArrow direction="right" onClick={handleNext} />
       <BackButton onClick={() => onNavigate('home')} />

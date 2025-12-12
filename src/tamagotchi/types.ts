@@ -43,6 +43,14 @@ export interface Pet {
   verticalOffset?: number; // Вертикальное смещение спрайта в процентах (положительное = вниз, отрицательное = вверх, по умолчанию 0)
 }
 
+// Конфигурация позиционирования для отдельного аксессуара
+export interface AccessoryPositionConfig {
+  x: number; // Позиция по X в процентах (0-100)
+  y: number; // Позиция по Y в процентах (0-100)
+  scale: number; // Масштаб (1.0 = 100%)
+  rotation?: number; // Поворот в градусах (опционально)
+}
+
 export interface ShopItem {
   id: ItemId;
   name: string;
@@ -51,6 +59,7 @@ export interface ShopItem {
   category: ShopCategory;
   price: number;
   owned: boolean;
+  accessoryConfig?: AccessoryPositionConfig; // Индивидуальная конфигурация позиционирования для аксессуара
 }
 
 export interface FoodItem {

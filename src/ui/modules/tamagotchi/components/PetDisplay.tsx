@@ -27,6 +27,10 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
   const bodyScale = typeof pet.scale === 'number' && pet.scale > 0 ? pet.scale : 1.0;
   const verticalOffset = typeof pet.verticalOffset === 'number' ? pet.verticalOffset : 0;
 
+  // Получаем конфигурацию шляпы: сначала из ShopItem, если есть, иначе из pet.accessoryConfig, иначе дефолтная
+  const defaultHatConfig = { x: 50, y: 8, scale: 0.75, rotation: undefined };
+  const hatConfig = hat?.accessoryConfig || config.hat || defaultHatConfig;
+
   // Функция для рендеринга изображения или эмодзи
   const renderImageOrEmoji = (imageUrl: string | undefined, emoji: string) => {
     if (imageUrl) {
@@ -57,13 +61,15 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
         </div>
         
         {/* Шляпа */}
-        {hat && config.hat && (
+        {hat && hatConfig && (
           <div 
             className="pet-display__part pet-display__part--hat"
             style={{
-              left: `${config.hat.x}%`,
-              top: `${config.hat.y}%`,
-              transform: `translate(-50%, -50%) scale(${config.hat.scale})${config.hat.rotation ? ` rotate(${config.hat.rotation}deg)` : ''}`,
+              left: `${hatConfig.x}%`,
+              top: `${hatConfig.y}%`,
+              transform: `translate(-50%, -50%) scale(${hatConfig.scale})${hatConfig.rotation ? ` rotate(${hatConfig.rotation}deg)` : ''}`,
+              width: '20em',
+              height: '20em',
             }}
           >
             {renderImageOrEmoji(hat.imageUrl, hat.emoji)}

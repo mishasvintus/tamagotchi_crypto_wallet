@@ -93,9 +93,28 @@ const INITIAL_SHOP_ITEMS: ShopItem[] = [
   { id: 'pet-dragon', name: 'Dragon', emoji: '🐉', imageUrl: '/assets/pets/dragon.png', category: 'pets', price: 300, owned: false },
   { id: 'pet-vampire', name: 'Vampire', emoji: '🧛', imageUrl: '/assets/pets/vampire.png', category: 'pets', price: 350, owned: false },
   
-  // Шляпы
-  { id: 'hat-wizard', name: 'Волшебная шляпа', emoji: '🎩', category: 'hats', price: 50, owned: false },
-  { id: 'hat-party', name: 'Праздничная шляпа', emoji: '🎉', category: 'hats', price: 75, owned: false },
+  // Шляпы (с индивидуальными настройками позиционирования)
+  { id: 'hat-none', name: 'Без шляпы', emoji: '', category: 'hats', price: 0, owned: true },
+  { 
+    id: 'hat-cap', 
+    name: 'Кепка', 
+    emoji: '🧢', 
+    imageUrl: '/assets/hats/hat_cap.png', 
+    category: 'hats', 
+    price: 50, 
+    owned: false,
+    accessoryConfig: { x: 45, y: 15, scale: 0.25 } 
+  },
+  { 
+    id: 'hat-kotelok', 
+    name: 'Котелок', 
+    emoji: '🎩', 
+    imageUrl: '/assets/hats/hat_kotelok.png', 
+    category: 'hats', 
+    price: 75, 
+    owned: false,
+    accessoryConfig: { x: 49, y: 10, scale: 0.18 } // Индивидуальная конфигурация для котелка
+  },
   
   // Ботинки
   { id: 'shoes-sneakers', name: 'Кроссовки', emoji: '👟', category: 'shoes', price: 60, owned: false },
@@ -440,17 +459,17 @@ export class TamagotchiService {
         if (parsed.currentPet) {
           const initialPet = INITIAL_PETS.find(p => p.id === parsed.currentPet.id);
           if (initialPet) {
-            // Объединяем сохраненные данные с начальными данными (imageUrl, accessoryConfig, scale)
+            // Объединяем сохраненные данные с начальными данными
+            // Важно: начальные данные (imageUrl, accessoryConfig, scale, verticalOffset) имеют приоритет
+            // так как они определяют внешний вид питомца, а сохраненные данные - только состояние (happiness, fullness, equippedHat, etc.)
             this.state.currentPet = {
-              ...initialPet,
-              ...parsed.currentPet,
-              // Сохраняем важные поля из начальных данных
-              imageUrl: initialPet.imageUrl || parsed.currentPet.imageUrl,
-              accessoryConfig: initialPet.accessoryConfig || parsed.currentPet.accessoryConfig,
-              // Сохраняем scale из сохраненных данных, если есть, иначе из начальных данных, иначе дефолт 1.0
-              scale: parsed.currentPet.scale ?? initialPet.scale ?? 1.0,
-              // Сохраняем verticalOffset из сохраненных данных, если есть, иначе из начальных данных, иначе дефолт 0
-              verticalOffset: parsed.currentPet.verticalOffset ?? initialPet.verticalOffset ?? 0,
+              ...initialPet, // Начальные данные (включая imageUrl, accessoryConfig, scale, verticalOffset)
+              ...parsed.currentPet, // Сохраненные данные (happiness, fullness, equippedHat, equippedShoes)
+              // Явно сохраняем важные поля из начальных данных (они не должны перезаписываться)
+              imageUrl: initialPet.imageUrl,
+              accessoryConfig: initialPet.accessoryConfig,
+              scale: initialPet.scale ?? parsed.currentPet.scale ?? 1.0,
+              verticalOffset: initialPet.verticalOffset ?? parsed.currentPet.verticalOffset ?? 0,
             };
           } else {
             this.state.currentPet = parsed.currentPet;
@@ -464,7 +483,20 @@ export class TamagotchiService {
         if (parsed.shopItems) {
           this.state.shopItems = this.state.shopItems.map(initialItem => {
             const savedItem = parsed.shopItems.find((s: any) => s.id === initialItem.id);
-            return savedItem ? { ...initialItem, ...savedItem } : initialItem;
+            if (savedItem) {
+              // Важно: accessoryConfig, imageUrl и другие визуальные настройки всегда берутся из initialItem
+              // так как они определяются кодом, а не пользовательскими данными
+              return { 
+                ...initialItem, // Начальные данные (включая accessoryConfig, imageUrl)
+                ...savedItem, // Сохраненные данные (owned, price может меняться)
+                // Явно сохраняем визуальные поля из начальных данных
+                accessoryConfig: initialItem.accessoryConfig ?? savedItem.accessoryConfig,
+                imageUrl: initialItem.imageUrl ?? savedItem.imageUrl,
+                emoji: initialItem.emoji ?? savedItem.emoji,
+                name: initialItem.name ?? savedItem.name,
+              };
+            }
+            return initialItem;
           });
         }
       }

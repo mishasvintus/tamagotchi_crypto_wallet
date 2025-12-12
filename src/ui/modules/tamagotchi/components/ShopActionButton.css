@@ -1,0 +1,53 @@
+.shop-action-button {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30%;
+  height: 8%;
+  padding: 1.5% 3%;
+  background: #e0e0e0;
+  color: #666;
+  border: 0.125rem solid #ccc;
+  border-radius: 1.5625rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.shop-action-button:hover:not(:disabled) {
+  background: #d0d0d0;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.shop-action-button:active:not(:disabled) {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.shop-action-button--disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: default;
+  pointer-events: none;
+}
+
+.shop-action-button--disabled:hover {
+  transform: translateX(-50%);
+  background: #e0e0e0;
+}
+
+.shop-action-button--price {
+  background: #f0f0f0;
+  color: #555;
+  border-color: #bbb;
+}
+
+.shop-action-button--price:hover {
+  background: #e8e8e8;
+  transform: translateX(-50%) scale(1.05);
+}
+

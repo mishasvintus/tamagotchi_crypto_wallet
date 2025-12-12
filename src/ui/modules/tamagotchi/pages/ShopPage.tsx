@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { TamagotchiPage } from '../TamagotchiModule';
 import { tamagotchiService } from '@/services/tamagotchi-service';
 import { ShopCategory, Pet, ShopItem } from '@/tamagotchi/types';
@@ -7,6 +7,7 @@ import { CategoryRow } from '../components/CategoryRow';
 import { BackButton } from '../components/BackButton';
 import { NavigationArrow } from '../components/NavigationArrow';
 import { PetDisplay } from '../components/PetDisplay';
+import { ShopActionButton } from '../components/ShopActionButton';
 import './ShopPage.css';
 
 interface ShopPageProps {
@@ -20,11 +21,12 @@ const DEFAULT_ACCESSORY_CONFIG = {
 };
 
 export function ShopPage({ onNavigate }: ShopPageProps) {
-  const currency = tamagotchiService.getCurrency();
-  const state = tamagotchiService.getState();
   const [activeCategory, setActiveCategory] = useState<ShopCategory>('pets');
-  const [currentPetIndex, setCurrentPetIndex] = useState(0);
-  const [currentHatIndex, setCurrentHatIndex] = useState(0);
+  const [updateKey, setUpdateKey] = useState(0); // Для принудительного обновления после покупки/выбора
+  
+  // Получаем актуальное состояние при каждом обновлении
+  const state = tamagotchiService.getState();
+  const currency = tamagotchiService.getCurrency();
 
   const categories = [
     { id: 'pets' as ShopCategory, emoji: '🧍' },
@@ -77,6 +79,35 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     });
   }, [state.shopItems, state.currentPet]);
 
+  // Находим индекс текущего выбранного питомца
+  const initialPetIndex = useMemo(() => {
+    const index = availablePets.findIndex(pet => pet.id === state.currentPet.id);
+    return index >= 0 ? index : 0;
+  }, [availablePets, state.currentPet.id]);
+
+  // Находим индекс текущей выбранной шляпы
+  const initialHatIndex = useMemo(() => {
+    if (!state.currentPet.equippedHat) {
+      // Если шляпа не выбрана, возвращаем индекс "hat-none"
+      const noneIndex = availableHats.findIndex(hat => hat.id === 'hat-none');
+      return noneIndex >= 0 ? noneIndex : 0;
+    }
+    const index = availableHats.findIndex(hat => hat.id === state.currentPet.equippedHat);
+    return index >= 0 ? index : 0;
+  }, [availableHats, state.currentPet.equippedHat]);
+
+  const [currentPetIndex, setCurrentPetIndex] = useState(initialPetIndex);
+  const [currentHatIndex, setCurrentHatIndex] = useState(initialHatIndex);
+
+  // Синхронизируем индексы при изменении состояния
+  useEffect(() => {
+    setCurrentPetIndex(initialPetIndex);
+  }, [initialPetIndex]);
+
+  useEffect(() => {
+    setCurrentHatIndex(initialHatIndex);
+  }, [initialHatIndex]);
+
   // Текущая выбранная шляпа
   const currentHat = useMemo(() => {
     if (availableHats.length === 0) return null;
@@ -104,13 +135,16 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     }
   }, [activeCategory, availablePets, currentPetIndex, state.currentPet]);
 
-  // Сброс индекса при смене категории
+  // Сброс индекса при смене категории - устанавливаем на текущий выбранный предмет
   const handleCategoryChange = (category: ShopCategory) => {
     setActiveCategory(category);
     if (category === 'hats') {
-      setCurrentHatIndex(0);
+      setCurrentHatIndex(initialHatIndex);
+    } else if (category === 'pets') {
+      setCurrentPetIndex(initialPetIndex);
     } else {
-      setCurrentPetIndex(0);
+      // Для shoes пока оставляем 0, так как пока нет логики для shoes
+      setCurrentPetIndex(initialPetIndex);
     }
   };
 
@@ -142,6 +176,59 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     }
   };
 
+  // Получаем текущий просматриваемый предмет
+  // Используем updateKey для обновления при изменении состояния
+  const currentItem = useMemo(() => {
+    // Получаем актуальное состояние
+    const currentState = tamagotchiService.getState();
+    if (activeCategory === 'hats') {
+      if (availableHats.length === 0) return null;
+      const validIndex = currentHatIndex >= 0 && currentHatIndex < availableHats.length 
+        ? currentHatIndex 
+        : 0;
+      return availableHats[validIndex];
+    } else if (activeCategory === 'pets') {
+      if (availablePets.length === 0) return null;
+      const validIndex = currentPetIndex >= 0 && currentPetIndex < availablePets.length 
+        ? currentPetIndex 
+        : 0;
+      const pet = availablePets[validIndex];
+      return currentState.shopItems.find(item => item.id === pet.id) || null;
+    }
+    return null;
+  }, [activeCategory, availableHats, availablePets, currentHatIndex, currentPetIndex, updateKey]);
+
+  // Проверяем, выбран ли текущий предмет
+  // Используем updateKey для принудительного обновления при изменении состояния
+  const isSelected = useMemo(() => {
+    if (!currentItem) return false;
+    // Получаем актуальное состояние каждый раз
+    const currentState = tamagotchiService.getState();
+    if (activeCategory === 'hats') {
+      return currentState.currentPet.equippedHat === currentItem.id;
+    } else if (activeCategory === 'pets') {
+      return currentState.currentPet.id === currentItem.id;
+    }
+    return false;
+  }, [currentItem, activeCategory, updateKey]);
+
+  // Обработчик покупки
+  const handleBuy = async () => {
+    if (!currentItem) return;
+    const success = await tamagotchiService.buyItem(currentItem.id);
+    if (success) {
+      setUpdateKey(prev => prev + 1); // Обновляем компонент
+    }
+  };
+
+  // Обработчик выбора
+  const handleSelect = () => {
+    if (!currentItem) return;
+    tamagotchiService.selectItem(currentItem.id);
+    // Принудительно обновляем компонент, чтобы получить актуальное состояние
+    setUpdateKey(prev => prev + 1);
+  };
+
   return (
     <div className="shop-page">
       <CurrencyButton 
@@ -158,13 +245,22 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
       </div>
       {displayedPet && (
         <PetDisplay 
-          key={`${displayedPet.id}-${activeCategory === 'hats' ? currentHat?.id || 'none' : ''}`} 
+          key={`${displayedPet.id}-${activeCategory === 'hats' ? currentHat?.id || 'none' : ''}-${updateKey}`} 
           pet={displayedPet}
           previewHat={activeCategory === 'hats' ? currentHat : undefined}
         />
       )}
       <NavigationArrow direction="left" onClick={handlePrevious} />
       <NavigationArrow direction="right" onClick={handleNext} />
+      {currentItem && (
+        <ShopActionButton
+          item={currentItem}
+          isSelected={isSelected}
+          onBuy={handleBuy}
+          onSelect={handleSelect}
+          verticalPosition="25%"
+        />
+      )}
       <BackButton onClick={() => onNavigate('home')} />
     </div>
   );

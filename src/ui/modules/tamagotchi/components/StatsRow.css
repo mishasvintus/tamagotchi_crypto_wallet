@@ -5,7 +5,7 @@
   right: 0;
   bottom: var(--row-vertical-position, 0);
   --row-vertical-position: 10%;
-  --row-gap: 20%;
+  --row-gap: 5%;
 }
 
 .stats-row .stat-button {
@@ -14,11 +14,11 @@
 }
 
 .stats-row .stat-button:nth-child(1) {
-  left: 50%;
-  transform: translateX(calc(-100% - var(--row-gap, 12%) / 2));
+  left: calc(50% - var(--row-gap, 12%) / 2);
+  transform: translateX(-100%);
 }
 
 .stats-row .stat-button:nth-child(2) {
-  left: 50%;
-  transform: translateX(calc(var(--row-gap, 12%) / 2));
+  left: calc(50% + var(--row-gap, 12%) / 2);
+  transform: translateX(0);
 }

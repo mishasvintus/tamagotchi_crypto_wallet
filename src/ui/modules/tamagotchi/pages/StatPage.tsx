@@ -67,7 +67,7 @@ export function StatPage({ type, onNavigate }: StatPageProps) {
       />
       <CurrencyButton 
         amount={currency} 
-        onClick={() => {}}
+        onClick={() => onNavigate('shop')}
         position="center-top"
       />
       <PetDisplay pet={pet} />

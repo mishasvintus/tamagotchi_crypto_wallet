@@ -31,11 +31,11 @@
 }
 
 .stats-row .stat-button:nth-child(1):hover {
-  transform: scale(var(--stat-button-scale, 1.1)) translateX(calc(-100% - var(--row-gap, 12%) / 2));
+  transform: translateX(-100%) scale(var(--stat-button-scale, 1.1));
 }
 
 .stats-row .stat-button:nth-child(2):hover {
-  transform: scale(var(--stat-button-scale, 1.1)) translateX(calc(var(--row-gap, 12%) / 2));
+  transform: translateX(0) scale(var(--stat-button-scale, 1.1));
 }
 
 .stat-button:active {
@@ -47,11 +47,11 @@
 }
 
 .stats-row .stat-button:nth-child(1):active {
-  transform: scale(0.95) translateX(calc(-100% - var(--row-gap, 12%) / 2));
+  transform: translateX(-100%) scale(0.95);
 }
 
 .stats-row .stat-button:nth-child(2):active {
-  transform: scale(0.95) translateX(calc(var(--row-gap, 12%) / 2));
+  transform: translateX(0) scale(0.95);
 }
 
 .stat-button__circle-container {

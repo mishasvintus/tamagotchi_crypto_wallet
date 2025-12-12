@@ -31,6 +31,22 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
   const defaultHatConfig = { x: 50, y: 8, scale: 0.75, rotation: undefined };
   const hatConfig = hat?.accessoryConfig || config.hat || defaultHatConfig;
 
+  // Получаем конфигурацию ботинок: сначала из ShopItem, если есть, иначе из pet.accessoryConfig, иначе дефолтная
+  const defaultShoesConfig = { x: 50, y: 88, gap: 30, scale: 0.55, rotation: undefined };
+  const shoesConfig = shoes?.accessoryConfig 
+    ? { 
+        x: shoes.accessoryConfig.x ?? defaultShoesConfig.x,
+        y: shoes.accessoryConfig.y ?? defaultShoesConfig.y,
+        gap: shoes.accessoryConfig.gap ?? defaultShoesConfig.gap,
+        scale: shoes.accessoryConfig.scale ?? defaultShoesConfig.scale,
+        rotation: shoes.accessoryConfig.rotation ?? defaultShoesConfig.rotation,
+      }
+    : config.shoes || defaultShoesConfig;
+
+  // Вычисляем позиции левого и правого ботинка на основе конфигурации пары
+  const leftShoeX = shoesConfig.x - shoesConfig.gap / 2;
+  const rightShoeX = shoesConfig.x + shoesConfig.gap / 2;
+
   // Функция для рендеринга изображения или эмодзи
   const renderImageOrEmoji = (imageUrl: string | undefined, emoji: string) => {
     if (imageUrl) {
@@ -61,13 +77,15 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
         </div>
         
         {/* Левый ботинок */}
-        {shoes && config.leftShoe && (
+        {shoes && shoesConfig && (
           <div 
             className="pet-display__part pet-display__part--shoe pet-display__part--left-shoe"
             style={{
-              left: `${config.leftShoe.x}%`,
-              top: `${config.leftShoe.y}%`,
-              transform: `translate(-50%, -50%) scale(${config.leftShoe.scale})${config.leftShoe.rotation ? ` rotate(${config.leftShoe.rotation}deg)` : ''}`,
+              left: `${leftShoeX}%`,
+              top: `${shoesConfig.y}%`,
+              transform: `translate(-50%, -50%) scale(${shoesConfig.scale})${shoesConfig.rotation ? ` rotate(${shoesConfig.rotation}deg)` : ''}`,
+              width: '20em',
+              height: '20em',
             }}
           >
             {renderImageOrEmoji(shoes.imageUrl, shoes.emoji)}
@@ -75,13 +93,15 @@ export function PetDisplay({ pet, previewHat, previewShoes }: PetDisplayProps) {
         )}
         
         {/* Правый ботинок */}
-        {shoes && config.rightShoe && (
+        {shoes && shoesConfig && (
           <div 
             className="pet-display__part pet-display__part--shoe pet-display__part--right-shoe"
             style={{
-              left: `${config.rightShoe.x}%`,
-              top: `${config.rightShoe.y}%`,
-              transform: `translate(-50%, -50%) scale(${config.rightShoe.scale})${config.rightShoe.rotation ? ` rotate(${config.rightShoe.rotation}deg)` : ''}`,
+              left: `${rightShoeX}%`,
+              top: `${shoesConfig.y}%`,
+              transform: `translate(-50%, -50%) scale(${shoesConfig.scale})${shoesConfig.rotation ? ` rotate(${shoesConfig.rotation}deg)` : ''}`,
+              width: '20em',
+              height: '20em',
             }}
           >
             {renderImageOrEmoji(shoes.imageUrl, shoes.emoji)}

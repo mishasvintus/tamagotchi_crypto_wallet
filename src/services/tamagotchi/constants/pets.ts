@@ -2,8 +2,7 @@ import type { Pet, PetAccessoryConfig } from '@/tamagotchi/types';
 
 const DEFAULT_ACCESSORY_CONFIG: PetAccessoryConfig = {
   hat: { x: 50, y: 8, scale: 0.75 },
-  leftShoe: { x: 35, y: 88, scale: 0.55 },
-  rightShoe: { x: 65, y: 88, scale: 0.55 },
+  shoes: { x: 50, y: 88, gap: 30, scale: 0.55 },
 };
 
 export const INITIAL_PETS: Pet[] = [

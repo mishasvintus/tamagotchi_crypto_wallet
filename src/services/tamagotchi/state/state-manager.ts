@@ -17,16 +17,29 @@ export class StateManager {
     const defaultPetId = 'pet-cat';
     const defaultPet = INITIAL_PETS.find(p => p.id === defaultPetId) || INITIAL_PETS[0];
     
-    this.userState = userState || {
-      currency: 150,
-      ownedPets: [defaultPetId],
-      ownedItems: [],
-      currentPetId: defaultPetId,
-      equippedHat: undefined,
-      equippedShoes: undefined,
-      happiness: defaultPet.happiness,
-      fullness: defaultPet.fullness,
-    };
+    if (userState) {
+      this.userState = {
+        currency: userState.currency ?? 150,
+        ownedPets: Array.isArray(userState.ownedPets) ? [...userState.ownedPets] : [defaultPetId],
+        ownedItems: Array.isArray(userState.ownedItems) ? [...userState.ownedItems] : [],
+        currentPetId: userState.currentPetId ?? defaultPetId,
+        equippedHat: userState.equippedHat,
+        equippedShoes: userState.equippedShoes,
+        happiness: userState.happiness ?? defaultPet.happiness,
+        fullness: userState.fullness ?? defaultPet.fullness,
+      };
+    } else {
+      this.userState = {
+        currency: 150,
+        ownedPets: [defaultPetId],
+        ownedItems: [],
+        currentPetId: defaultPetId,
+        equippedHat: undefined,
+        equippedShoes: undefined,
+        happiness: defaultPet.happiness,
+        fullness: defaultPet.fullness,
+      };
+    }
 
     const currentPet = this.buildCurrentPet();
     
@@ -107,7 +120,12 @@ export class StateManager {
   }
 
   isItemOwned(itemId: string): boolean {
-    return this.userState.ownedItems.includes(itemId) || this.userState.ownedPets.includes(itemId as any);
+    const isInOwnedItems = this.userState.ownedItems.includes(itemId) || this.userState.ownedPets.includes(itemId as any);
+    if (isInOwnedItems) {
+      return true;
+    }
+    const initialItem = INITIAL_SHOP_ITEMS.find(item => item.id === itemId);
+    return initialItem?.owned === true;
   }
 
   setEquippedHat(hatId: string | undefined): void {
@@ -154,9 +172,12 @@ export class StateManager {
   }
 
   private updateShopItemsOwned(): void {
-    this.state.shopItems = INITIAL_SHOP_ITEMS.map(item => ({
-      ...item,
-      owned: item.owned || this.userState.ownedItems.includes(item.id) || this.userState.ownedPets.includes(item.id as any),
-    }));
+    this.state.shopItems = INITIAL_SHOP_ITEMS.map(item => {
+      const isOwned = this.userState.ownedItems.includes(item.id) || this.userState.ownedPets.includes(item.id as any);
+      return {
+        ...item,
+        owned: item.owned || isOwned,
+      };
+    });
   }
 }

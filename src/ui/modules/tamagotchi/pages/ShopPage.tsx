@@ -39,6 +39,11 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     return state.shopItems.filter(item => item.category === 'hats');
   }, [state.shopItems]);
 
+  // Получаем список ботинок
+  const availableShoes = useMemo(() => {
+    return state.shopItems.filter(item => item.category === 'shoes');
+  }, [state.shopItems]);
+
   // Получаем список питомцев из shopItems - предзагружаем все данные заранее
   const availablePets = useMemo(() => {
     const petShopItems = state.shopItems.filter(item => item.category === 'pets');
@@ -96,8 +101,20 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     return index >= 0 ? index : 0;
   }, [availableHats, state.currentPet.equippedHat]);
 
+  // Находим индекс текущих выбранных ботинок
+  const initialShoeIndex = useMemo(() => {
+    if (!state.currentPet.equippedShoes) {
+      // Если ботинки не выбраны, возвращаем индекс "shoes-none"
+      const noneIndex = availableShoes.findIndex(shoe => shoe.id === 'shoes-none');
+      return noneIndex >= 0 ? noneIndex : 0;
+    }
+    const index = availableShoes.findIndex(shoe => shoe.id === state.currentPet.equippedShoes);
+    return index >= 0 ? index : 0;
+  }, [availableShoes, state.currentPet.equippedShoes]);
+
   const [currentPetIndex, setCurrentPetIndex] = useState(initialPetIndex);
   const [currentHatIndex, setCurrentHatIndex] = useState(initialHatIndex);
+  const [currentShoeIndex, setCurrentShoeIndex] = useState(initialShoeIndex);
 
   // Синхронизируем индексы при изменении состояния
   useEffect(() => {
@@ -107,6 +124,10 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
   useEffect(() => {
     setCurrentHatIndex(initialHatIndex);
   }, [initialHatIndex]);
+
+  useEffect(() => {
+    setCurrentShoeIndex(initialShoeIndex);
+  }, [initialShoeIndex]);
 
   // Текущая выбранная шляпа
   const currentHat = useMemo(() => {
@@ -119,10 +140,21 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     return hat.id === 'hat-none' ? null : hat;
   }, [availableHats, currentHatIndex]);
 
-  // Текущий просматриваемый питомец с предпросмотром шляпы
+  // Текущие выбранные ботинки
+  const currentShoes = useMemo(() => {
+    if (availableShoes.length === 0) return null;
+    const validIndex = currentShoeIndex >= 0 && currentShoeIndex < availableShoes.length 
+      ? currentShoeIndex 
+      : 0;
+    const shoes = availableShoes[validIndex];
+    // Если это "none", возвращаем null
+    return shoes.id === 'shoes-none' ? null : shoes;
+  }, [availableShoes, currentShoeIndex]);
+
+  // Текущий просматриваемый питомец с предпросмотром шляпы/ботинок
   const displayedPet = useMemo(() => {
-    if (activeCategory === 'hats') {
-      // Показываем текущего питомца с предпросмотром выбранной шляпы
+    if (activeCategory === 'hats' || activeCategory === 'shoes') {
+      // Показываем текущего питомца с предпросмотром выбранной шляпы/ботинок
       const pet = { ...state.currentPet };
       return pet;
     } else {
@@ -140,10 +172,9 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     setActiveCategory(category);
     if (category === 'hats') {
       setCurrentHatIndex(initialHatIndex);
+    } else if (category === 'shoes') {
+      setCurrentShoeIndex(initialShoeIndex);
     } else if (category === 'pets') {
-      setCurrentPetIndex(initialPetIndex);
-    } else {
-      // Для shoes пока оставляем 0, так как пока нет логики для shoes
       setCurrentPetIndex(initialPetIndex);
     }
   };
@@ -152,6 +183,11 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     if (activeCategory === 'hats') {
       setCurrentHatIndex((prev) => {
         const newIndex = prev === 0 ? availableHats.length - 1 : prev - 1;
+        return newIndex;
+      });
+    } else if (activeCategory === 'shoes') {
+      setCurrentShoeIndex((prev) => {
+        const newIndex = prev === 0 ? availableShoes.length - 1 : prev - 1;
         return newIndex;
       });
     } else {
@@ -166,6 +202,11 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     if (activeCategory === 'hats') {
       setCurrentHatIndex((prev) => {
         const newIndex = prev === availableHats.length - 1 ? 0 : prev + 1;
+        return newIndex;
+      });
+    } else if (activeCategory === 'shoes') {
+      setCurrentShoeIndex((prev) => {
+        const newIndex = prev === availableShoes.length - 1 ? 0 : prev + 1;
         return newIndex;
       });
     } else {
@@ -187,6 +228,12 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
         ? currentHatIndex 
         : 0;
       return availableHats[validIndex];
+    } else if (activeCategory === 'shoes') {
+      if (availableShoes.length === 0) return null;
+      const validIndex = currentShoeIndex >= 0 && currentShoeIndex < availableShoes.length 
+        ? currentShoeIndex 
+        : 0;
+      return availableShoes[validIndex];
     } else if (activeCategory === 'pets') {
       if (availablePets.length === 0) return null;
       const validIndex = currentPetIndex >= 0 && currentPetIndex < availablePets.length 
@@ -196,7 +243,7 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
       return currentState.shopItems.find(item => item.id === pet.id) || null;
     }
     return null;
-  }, [activeCategory, availableHats, availablePets, currentHatIndex, currentPetIndex, updateKey]);
+  }, [activeCategory, availableHats, availableShoes, availablePets, currentHatIndex, currentShoeIndex, currentPetIndex, updateKey]);
 
   // Проверяем, выбран ли текущий предмет
   // Используем updateKey для принудительного обновления при изменении состояния
@@ -205,7 +252,15 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
     // Получаем актуальное состояние каждый раз
     const currentState = tamagotchiService.getState();
     if (activeCategory === 'hats') {
+      if (currentItem.id === 'hat-none') {
+        return currentState.currentPet.equippedHat === undefined;
+      }
       return currentState.currentPet.equippedHat === currentItem.id;
+    } else if (activeCategory === 'shoes') {
+      if (currentItem.id === 'shoes-none') {
+        return currentState.currentPet.equippedShoes === undefined;
+      }
+      return currentState.currentPet.equippedShoes === currentItem.id;
     } else if (activeCategory === 'pets') {
       return currentState.currentPet.id === currentItem.id;
     }
@@ -245,9 +300,10 @@ export function ShopPage({ onNavigate }: ShopPageProps) {
       </div>
       {displayedPet && (
         <PetDisplay 
-          key={`${displayedPet.id}-${activeCategory === 'hats' ? currentHat?.id || 'none' : state.currentPet.equippedHat || 'none'}-${updateKey}`} 
+          key={`${displayedPet.id}-${activeCategory === 'hats' ? currentHat?.id || 'none' : state.currentPet.equippedHat || 'none'}-${activeCategory === 'shoes' ? currentShoes?.id || 'none' : state.currentPet.equippedShoes || 'none'}-${updateKey}`} 
           pet={displayedPet}
           previewHat={activeCategory === 'hats' ? currentHat : (state.currentPet.equippedHat ? state.shopItems.find(item => item.id === state.currentPet.equippedHat) || undefined : undefined)}
+          previewShoes={activeCategory === 'shoes' ? currentShoes : (state.currentPet.equippedShoes ? state.shopItems.find(item => item.id === state.currentPet.equippedShoes) || undefined : undefined)}
         />
       )}
       <NavigationArrow direction="left" onClick={handlePrevious} />

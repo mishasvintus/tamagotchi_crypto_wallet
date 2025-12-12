@@ -70,7 +70,36 @@ export const INITIAL_SHOP_ITEMS: ShopItem[] = [
     accessoryConfig: { x: 50, y: 10, scale: 0.5 }
   },
   
-  { id: 'shoes-sneakers', name: 'Кроссовки', emoji: '👟', category: 'shoes', price: 60, owned: false },
-  { id: 'shoes-boots', name: 'Сапоги', emoji: '👢', category: 'shoes', price: 80, owned: false },
+  { id: 'shoes-none', name: 'Без ботинок', emoji: '', category: 'shoes', price: 0, owned: true },
+  { 
+    id: 'sneakers1', 
+    name: 'Кроссовки', 
+    emoji: '👟', 
+    imageUrl: '/assets/shoes/sneakers1.png', 
+    category: 'shoes', 
+    price: 60, 
+    owned: false,
+    accessoryConfig: { x: 43, y: 100, gap: 20, scale: 0.25, rotation: -30 }
+  },
+  { 
+    id: 'sneakers2', 
+    name: 'Кроссовки', 
+    emoji: '👟', 
+    imageUrl: '/assets/shoes/sneakers2.png', 
+    category: 'shoes', 
+    price: 60, 
+    owned: false,
+    accessoryConfig: { x: 43, y: 100, gap: 20, scale: 0.25, rotation: -30 }
+  },
+  { 
+    id: 'sneakers3', 
+    name: 'Кроссовки', 
+    emoji: '👟', 
+    imageUrl: '/assets/shoes/sneakers3.png', 
+    category: 'shoes', 
+    price: 60, 
+    owned: false,
+    accessoryConfig: { x: 43, y: 100, gap: 20, scale: 0.25, rotation: -30 }
+  },
 ];
 

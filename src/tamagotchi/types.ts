@@ -13,19 +13,13 @@ export interface PetAccessoryConfig {
     scale: number; // Масштаб аксессуара (1.0 = 100%)
     rotation?: number; // Поворот в градусах (опционально)
   };
-  // Конфигурация левого ботинка
-  leftShoe?: {
-    x: number;
-    y: number;
-    scale: number;
-    rotation?: number;
-  };
-  // Конфигурация правого ботинка
-  rightShoe?: {
-    x: number;
-    y: number;
-    scale: number;
-    rotation?: number;
+  // Конфигурация пары ботинок
+  shoes?: {
+    x: number; // Сдвиг влево/вправо (центр пары ботинок) в процентах (0-100)
+    y: number; // Высота по вертикали в процентах (0-100)
+    gap: number; // Расстояние между ботинками в процентах (0-100)
+    scale: number; // Масштабирование пары ботинок (1.0 = 100%)
+    rotation?: number; // Наклон ботинок в градусах (общий для обоих, опционально)
   };
 }
 
@@ -49,6 +43,7 @@ export interface AccessoryPositionConfig {
   y: number; // Позиция по Y в процентах (0-100)
   scale: number; // Масштаб (1.0 = 100%)
   rotation?: number; // Поворот в градусах (опционально)
+  gap?: number; // Расстояние между ботинками в процентах (только для shoes, опционально)
 }
 
 export interface ShopItem {

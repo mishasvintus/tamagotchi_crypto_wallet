@@ -6,7 +6,7 @@
   width: var(--pet-display-size, 30%);
   aspect-ratio: 1;
   /* Глобальные настройки размера и расположения питомца */
-  --pet-display-top: 25%;
+  --pet-display-top: 20%;
   --pet-display-size: 45%;
   transition: none;
 }
@@ -33,7 +33,7 @@
 .pet-display__part--body {
   left: 50%;
   top: 50%;
-  z-index: 2;
+  z-index: 1;
   /* width и height задаются через inline стили для поддержки scale */
   font-size: 30em;
   transition: none;
@@ -52,6 +52,14 @@
 .pet-display__part--shoe {
   z-index: 1;
   font-size: 20em;
+}
+
+.pet-display__part--left-shoe {
+  z-index: 2;
+}
+
+.pet-display__part--right-shoe {
+  z-index: 3;
 }
 
 .pet-display__image {

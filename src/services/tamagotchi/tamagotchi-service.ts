@@ -147,9 +147,11 @@ export class TamagotchiService {
     if (!item || !this.stateManager.isItemOwned(itemId)) return;
 
     if (item.category === 'hats') {
-      this.stateManager.setEquippedHat(itemId);
+      const hatId = itemId === 'hat-none' ? undefined : itemId;
+      this.stateManager.setEquippedHat(hatId);
     } else if (item.category === 'shoes') {
-      this.stateManager.setEquippedShoes(itemId);
+      const shoesId = itemId === 'shoes-none' ? undefined : itemId;
+      this.stateManager.setEquippedShoes(shoesId);
     } else if (item.category === 'pets') {
       this.stateManager.setCurrentPetId(itemId);
     }

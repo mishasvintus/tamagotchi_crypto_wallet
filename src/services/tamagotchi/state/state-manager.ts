@@ -171,7 +171,7 @@ export class StateManager {
     };
   }
 
-  private updateShopItemsOwned(): void {
+  updateShopItemsOwned(): void {
     this.state.shopItems = INITIAL_SHOP_ITEMS.map(item => {
       const isOwned = this.userState.ownedItems.includes(item.id) || this.userState.ownedPets.includes(item.id as any);
       return {

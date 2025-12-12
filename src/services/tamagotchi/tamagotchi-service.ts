@@ -10,6 +10,7 @@ import { INITIAL_PETS, INITIAL_SHOP_ITEMS, INITIAL_FOOD, INITIAL_ACTIVITIES } fr
 import { StorageManager } from './storage/storage-manager';
 import { StateManager } from './state/state-manager';
 import { DecreaseTimer } from './timers/decrease-timer';
+import './admin-commands';
 
 export class TamagotchiService {
   private stateManager: StateManager;

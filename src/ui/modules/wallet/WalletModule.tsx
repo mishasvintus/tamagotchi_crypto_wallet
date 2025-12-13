@@ -18,29 +18,51 @@ type WalletPage = 'home' | 'create' | 'send' | 'receive' | 'history';
 export function WalletModule() {
     const { isWalletCreated, isWalletUnlocked } = useWallet();
     const [currentPage, setCurrentPage] = useState<WalletPage>('create');
+    const [isSeedPendingConfirmation, setIsSeedPendingConfirmation] = useState(
+        () => localStorage.getItem('wallet_seed_pending_confirmation') === 'true'
+    );
+
+    // Слушаем изменения localStorage для обновления состояния
+    useEffect(() => {
+        const checkSeedConfirmation = () => {
+            const pending = localStorage.getItem('wallet_seed_pending_confirmation') === 'true';
+            setIsSeedPendingConfirmation(pending);
+        };
+
+        const interval = setInterval(checkSeedConfirmation, 100);
+
+        window.addEventListener('storage', checkSeedConfirmation);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('storage', checkSeedConfirmation);
+        };
+    }, []);
 
     // Инициализация страницы на основе состояния кошелька
     useEffect(() => {
         if (isWalletCreated) {
+            if (isSeedPendingConfirmation) {
+                setCurrentPage('create');
+                return;
+            }
             if (isWalletUnlocked) {
                 setCurrentPage('home');
-            } else {
-                // Кошелек создан, но не разблокирован - показываем страницу входа
-                // currentPage остается как есть, логика ниже покажет LoginPage
             }
         } else {
-            // Кошелек не создан - показываем страницу создания
             setCurrentPage('create');
         }
-    }, [isWalletCreated, isWalletUnlocked]);
+    }, [isWalletCreated, isWalletUnlocked, isSeedPendingConfirmation]);
 
     // Автоматически переключаемся на главную страницу после разблокировки
     useEffect(() => {
+        if (isSeedPendingConfirmation) {
+            return;
+        }
         if (isWalletUnlocked && isWalletCreated) {
-            // Если кошелек разблокирован, показываем главную страницу
             setCurrentPage('home');
         }
-    }, [isWalletUnlocked, isWalletCreated]);
+    }, [isWalletUnlocked, isWalletCreated, isSeedPendingConfirmation]);
 
     const handleNavigate = (page: WalletPage) => {
         setCurrentPage(page);
@@ -51,20 +73,18 @@ export function WalletModule() {
     };
 
     const handleLoginSuccess = () => {
-        // Состояние уже обновлено в useWallet, useEffect переключит страницу
-        // Принудительно переключаем для немедленного обновления
         setCurrentPage('home');
     };
 
-    // Если кошелёк не создан, показываем страницу создания
-    if (!isWalletCreated) {
+    // Если кошелёк не создан или seed фраза еще не подтверждена, показываем страницу создания
+    if (!isWalletCreated || isSeedPendingConfirmation) {
         return (
             <div className="wallet-module">
                 <div className="wallet-module__header">
                     <h2>💰 Кошелёк</h2>
                 </div>
                 <div className="wallet-module__content">
-                    <CreateWalletPage />
+                    <CreateWalletPage onSeedConfirmed={() => setIsSeedPendingConfirmation(false)} />
                 </div>
             </div>
         );

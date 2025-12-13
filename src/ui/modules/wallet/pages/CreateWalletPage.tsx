@@ -9,7 +9,11 @@ import './CreateWalletPage.css';
 
 type Mode = 'select' | 'create' | 'import';
 
-export function CreateWalletPage() {
+interface CreateWalletPageProps {
+    onSeedConfirmed?: () => void;
+}
+
+export function CreateWalletPage({ onSeedConfirmed }: CreateWalletPageProps = {}) {
     const { createWallet, importWallet, error, clearError } = useWallet();
     const [mode, setMode] = useState<Mode>('select');
     const [password, setPassword] = useState('');
@@ -18,8 +22,6 @@ export function CreateWalletPage() {
     const [generatedMnemonic, setGeneratedMnemonic] = useState<string | null>(null);
     const [seedConfirmed, setSeedConfirmed] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    // useEffect не нужен здесь - логика переключения страниц в WalletModule
 
     const handleCreateWallet = async () => {
         if (!password || password.length < 8) {
@@ -38,6 +40,7 @@ export function CreateWalletPage() {
             const result = await createWallet(password);
             setGeneratedMnemonic(result.mnemonic);
             setMode('create');
+            localStorage.setItem('wallet_seed_pending_confirmation', 'true');
         } catch (err) {
             console.error('Error creating wallet:', err);
         } finally {
@@ -68,8 +71,7 @@ export function CreateWalletPage() {
             if (!result.success) {
                 alert(result.error || 'Не удалось импортировать кошелёк');
             } else {
-                // Кошелёк успешно импортирован и автоматически разблокирован
-                // Состояние обновится автоматически через useWallet
+                localStorage.removeItem('wallet_seed_pending_confirmation');
             }
         } catch (err) {
             console.error('Error importing wallet:', err);
@@ -80,6 +82,10 @@ export function CreateWalletPage() {
 
     const handleSeedConfirmed = () => {
         setSeedConfirmed(true);
+        localStorage.removeItem('wallet_seed_pending_confirmation');
+        if (onSeedConfirmed) {
+            onSeedConfirmed();
+        }
         // После подтверждения кошелёк создан и автоматически разблокирован
         // Состояние обновится автоматически через useWallet
         // Небольшая задержка для показа сообщения об успехе

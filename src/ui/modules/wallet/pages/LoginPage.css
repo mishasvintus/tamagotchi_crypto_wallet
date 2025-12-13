@@ -1,5 +1,5 @@
 .login-page {
-    padding: 2rem;
+    padding: 1.5rem;
     max-width: 400px;
     margin: 0 auto;
 }
@@ -7,7 +7,7 @@
 .login-page__title {
     font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     text-align: center;
     color: #333;
 }
@@ -16,15 +16,15 @@
     font-size: 0.9rem;
     color: #666;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
 }
 
 .login-page__form {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .login-page__form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .login-page__label {
@@ -88,20 +88,21 @@
 }
 
 .login-page__hint {
-    padding: 1rem;
+    padding: 0.75rem;
     background-color: #f0f7ff;
     border: 2px solid #b3d9ff;
     border-radius: 8px;
     font-size: 0.85rem;
     color: #666;
     text-align: center;
+    margin-bottom: 0.75rem;
 }
 
 .login-page__divider {
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 1.5rem 0;
+    margin: 0.75rem 0;
     color: #999;
     font-size: 0.9rem;
 }
@@ -118,14 +119,14 @@
 }
 
 .login-page__switch-wallet {
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
 }
 
 .login-page__switch-text {
     font-size: 0.9rem;
     color: #666;
     text-align: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .login-page__switch-btn {

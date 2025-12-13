@@ -296,8 +296,9 @@ export function useWallet(): UseWalletReturn {
         setAddress(null);
         setBalance(null);
         setIsWalletUnlocked(false);
-        setIsWalletCreated(false); // Важно: помечаем, что кошелек не создан
+        setIsWalletCreated(false);
         setError(null);
+        localStorage.removeItem('wallet_seed_pending_confirmation');
         console.log('Wallet deleted');
     }, []);
 

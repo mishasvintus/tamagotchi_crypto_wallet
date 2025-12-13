@@ -93,13 +93,6 @@ export function TransactionHistoryPage({ onBack }: TransactionHistoryPageProps) 
     return (
         <div className="transaction-history-page">
             <div className="transaction-history-page__header">
-                <button
-                    className="transaction-history-page__back-header-btn"
-                    onClick={onBack}
-                    title="Назад в главное меню"
-                >
-                    ← Назад
-                </button>
                 <h2 className="transaction-history-page__title">История транзакций</h2>
                 <button
                     className="transaction-history-page__refresh-btn"

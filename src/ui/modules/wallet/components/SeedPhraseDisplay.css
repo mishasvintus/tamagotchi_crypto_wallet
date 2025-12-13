@@ -1,16 +1,16 @@
 .seed-phrase-display {
-    padding: 1rem;
+    padding: 0.75rem;
 }
 
 .seed-phrase-display__warning {
-    padding: 1rem;
+    padding: 0.85rem;
     background-color: #fff3cd;
     border: 2px solid #ffc107;
     border-radius: 8px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: #856404;
     font-size: 0.9rem;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 .seed-phrase-display__hidden {
@@ -36,16 +36,16 @@
 
 .seed-phrase-display__words {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    gap: 0.6rem;
+    margin-bottom: 1rem;
 }
 
 .seed-phrase-display__word {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem;
+    padding: 0.6rem;
     background-color: #f5f5f5;
     border-radius: 6px;
     font-family: 'Courier New', monospace;
@@ -60,6 +60,7 @@
 .seed-phrase-display__word-text {
     color: #333;
     font-weight: 500;
+    font-size: 0.95rem;
 }
 
 .seed-phrase-display__confirm {
@@ -68,12 +69,12 @@
 }
 
 .seed-phrase-display__confirm-btn {
-    padding: 0.75rem 2rem;
+    padding: 0.7rem 1.75rem;
     background-color: #28a745;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -85,8 +86,8 @@
 
 .seed-phrase-display__confirmed {
     text-align: center;
-    padding: 1rem;
+    padding: 0.75rem;
     color: #28a745;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }

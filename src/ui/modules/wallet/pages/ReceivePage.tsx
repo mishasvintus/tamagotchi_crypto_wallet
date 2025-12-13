@@ -18,13 +18,6 @@ export function ReceivePage({ onBack }: ReceivePageProps) {
     return (
         <div className="receive-page">
             <div className="receive-page__header">
-                <button
-                    className="receive-page__back-header-btn"
-                    onClick={onBack}
-                    title="Назад в главное меню"
-                >
-                    ← Назад
-                </button>
                 <h2 className="receive-page__title">Получить ETH</h2>
             </div>
 
@@ -33,8 +26,7 @@ export function ReceivePage({ onBack }: ReceivePageProps) {
                     <div className="receive-page__qr">
                         <QRCodeDisplay
                             data={address}
-                            size={250}
-                            title="Адрес для получения"
+                            size={180}
                         />
                     </div>
 

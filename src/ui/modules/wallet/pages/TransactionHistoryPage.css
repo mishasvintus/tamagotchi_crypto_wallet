@@ -1,5 +1,5 @@
 .transaction-history-page {
-    padding: 1.5rem;
+    padding: 0.75rem;
     max-width: 800px;
     margin: 0 auto;
     display: flex;
@@ -11,30 +11,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    gap: 1rem;
-}
-
-.transaction-history-page__back-header-btn {
-    padding: 0.5rem 1rem;
-    background-color: #f5f5f5;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: #333;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.transaction-history-page__back-header-btn:hover {
-    background-color: #e0e0e0;
-    border-color: #d0d0d0;
+    margin-bottom: 0.75rem;
+    gap: 0.75rem;
+    position: relative;
 }
 
 .transaction-history-page__title {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: #333;
     margin: 0;
@@ -43,11 +26,11 @@
 }
 
 .transaction-history-page__refresh-btn {
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.75rem;
     background-color: #f5f5f5;
-    border: 2px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -63,17 +46,17 @@
 
 .transaction-history-page__filters {
     display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 0.3rem;
+    margin-bottom: 0.75rem;
     flex-wrap: wrap;
 }
 
 .transaction-history-page__filter-btn {
-    padding: 0.5rem 1rem;
+    padding: 0.35rem 0.7rem;
     background-color: #f5f5f5;
-    border: 2px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -123,12 +106,12 @@
 }
 
 .transaction-history-page__list {
-    margin-bottom: 1.5rem;
-    max-height: 50vh;
+    margin-bottom: 0.75rem;
+    max-height: 36vh;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 0.5rem;
-    min-height: 200px;
+    padding-right: 0.4rem;
+    min-height: 180px;
 }
 
 /* Стили для скроллбара */
@@ -152,11 +135,11 @@
 
 .transaction-history-page__back-btn {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.6rem;
     background-color: #f5f5f5;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s;
 }
